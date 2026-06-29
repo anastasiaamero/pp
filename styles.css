@@ -426,11 +426,12 @@ img {
 }
 
 .modal-panel > img {
-  width: 100%;
+  width: auto;
+  max-width: 100%;
+  margin: 0 auto;
+  height: auto;
   max-height: 58svh;
-  object-fit: contain;
   border-radius: 24px;
-  background: #f2f0f0;
 }
 
 .modal-copy {
@@ -488,9 +489,11 @@ img {
 }
 
 .modal-gallery img {
-  width: 100%;
+  width: auto;
+  max-width: 100%;
+  margin: 0 auto;
+  height: auto;
   border-radius: 20px;
-  background: #f2f0f0;
 }
 
 .modal-blocks {
@@ -538,9 +541,11 @@ img {
 }
 
 .modal-block img {
-  width: 100%;
+  width: auto;
+  max-width: 100%;
+  margin: 0 auto;
+  height: auto;
   border-radius: 18px;
-  background: #eeeeee;
 }
 
 .modal-close {
@@ -718,10 +723,11 @@ img {
 
 .project-preview > img {
   display: block;
-  width: 100%;
+  width: auto;
+  max-width: 100%;
+  margin: 0 auto;
+  height: auto;
   max-height: 260px;
-  object-fit: contain;
-  background: #f2f0f0;
 }
 
 .project-preview-copy {
@@ -804,9 +810,11 @@ img {
 .project-preview-block img,
 .project-preview-gallery img {
   display: block;
-  width: 100%;
+  width: auto;
+  max-width: 100%;
+  margin: 0 auto;
+  height: auto;
   border-radius: 14px;
-  background: #eeeeee;
 }
 
 @keyframes star-in {
