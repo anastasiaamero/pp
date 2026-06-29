@@ -561,7 +561,7 @@ function getCardModalItem(index) {
   return [
     card[0] || defaultCard?.[0] || "",
     card[1] || defaultCard?.[1] || "",
-    cardModalPhotos[index] || card[2] || defaultCard?.[2] || "",
+    card[2] || cardModalPhotos[index] || defaultCard?.[2] || "",
     card[3] || (defaultCard ? defaultCard[3] : "") || "",
     88,
     "",
