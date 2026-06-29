@@ -181,7 +181,8 @@
             <label>Описание в окне <textarea data-project-field="desc" rows="4"></textarea></label>
             <label>Дополнительный текст <textarea data-project-field="extraText" rows="5"></textarea></label>
             <label>Высота окна, % экрана <input data-project-field="height" type="number" min="60" max="220" step="5" /></label>
-            <label>Картинка проекта <input data-project-image type="file" accept="image/*" /></label>
+            <label>Картинка проекта
+              <span class="admin-img-row"><input data-project-image type="file" accept="image/*" /> <button type="button" data-remove-project-image class="admin-img-remove">✕</button></span></label>
             <label>Дополнительные картинки <input data-project-extra-images type="file" accept="image/*" multiple /></label>
           </div>
           <div class="admin-section">
@@ -190,7 +191,8 @@
             <label>Название <input data-card-field="title" type="text" /></label>
             <label>Подзаголовок <input data-card-field="subtitle" type="text" /></label>
             <label>Описание <textarea data-card-field="desc" rows="3"></textarea></label>
-            <label>Картинка карточки <input data-card-image type="file" accept="image/*" /></label>
+            <label>Картинка карточки
+              <span class="admin-img-row"><input data-card-image type="file" accept="image/*" /> <button type="button" data-remove-card-image class="admin-img-remove">✕</button></span></label>
           </div>
           <div class="admin-section">
             <h3>Блоки внутри проекта</h3>
@@ -214,7 +216,8 @@
             </label>
             <label>Текст кнопки <input data-block-field="linkText" type="text" placeholder="Например: Открыть сайт" /></label>
             <label>Ссылка для кнопки <input data-block-field="link" type="text" placeholder="https://..." /></label>
-            <label>Картинка блока <input data-block-image type="file" accept="image/*" /></label>
+            <label>Картинка блока
+              <span class="admin-img-row"><input data-block-image type="file" accept="image/*" /> <button type="button" data-remove-block-image class="admin-img-remove">✕</button></span></label>
             <p class="admin-hint">Кнопка появится, если заполнен и текст, и ссылка.</p>
           </div>
           <div class="admin-section admin-preview-section">

@@ -388,7 +388,7 @@ function readFileAsDataUrl(file) {
 }
 
 async function readImageFile(file) {
-  if (!file.type.startsWith("image/") || file.type === "image/svg+xml") {
+  if (!file.type.startsWith("image/") || file.type === "image/svg+xml" || file.type === "image/gif") {
     return readFileAsDataUrl(file);
   }
 
@@ -1272,6 +1272,27 @@ document.querySelector("[data-block-image]").addEventListener("change", (event) 
   }).catch(() => {
     alert("Не получилось загрузить картинку.");
   });
+});
+
+document.querySelector("[data-remove-project-image]").addEventListener("click", () => {
+  state.projects[selectedProject][2] = "";
+  document.querySelector("[data-project-image]").value = "";
+  if (saveState()) { renderContent(); renderProjectPreview(); }
+});
+
+document.querySelector("[data-remove-card-image]").addEventListener("click", () => {
+  state.cards[selectedCard][4] = "";
+  document.querySelector("[data-card-image]").value = "";
+  if (saveState()) renderContent();
+});
+
+document.querySelector("[data-remove-block-image]").addEventListener("click", () => {
+  normalizeProjectBlocks();
+  const block = state.projects[selectedProject][7][selectedBlock];
+  if (!block) return;
+  block.image = "";
+  document.querySelector("[data-block-image]").value = "";
+  if (saveState()) renderProjectPreview();
 });
 
 document.addEventListener("keydown", (event) => {
