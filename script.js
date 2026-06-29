@@ -350,14 +350,54 @@ function mergeProject(project, saved) {
 }
 
 function saveState() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({
-    lang: state.lang,
-    heroByLang: state.heroByLang,
-    hero: state.hero,
-    projects: state.projects,
-    cards: state.cards
-  }));
-  localStorage.setItem(LANGUAGE_KEY, state.lang);
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      lang: state.lang,
+      heroByLang: state.heroByLang,
+      hero: state.hero,
+      projects: state.projects,
+      cards: state.cards
+    }));
+    localStorage.setItem(LANGUAGE_KEY, state.lang);
+    return true;
+  } catch (error) {
+    console.error(error);
+    alert("Не получилось сохранить изменения: изображение слишком большое для браузера. Попробуй загрузить картинку поменьше.");
+    return false;
+  }
+}
+
+function readFileAsDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.addEventListener("load", () => resolve(String(reader.result)));
+    reader.addEventListener("error", reject);
+    reader.readAsDataURL(file);
+  });
+}
+
+async function readImageFile(file) {
+  if (!file.type.startsWith("image/") || file.type === "image/svg+xml") {
+    return readFileAsDataUrl(file);
+  }
+
+  const dataUrl = await readFileAsDataUrl(file);
+  const image = await new Promise((resolve, reject) => {
+    const img = new Image();
+    img.addEventListener("load", () => resolve(img));
+    img.addEventListener("error", reject);
+    img.src = dataUrl;
+  });
+  const maxSide = 1800;
+  const ratio = Math.min(1, maxSide / Math.max(image.naturalWidth, image.naturalHeight));
+  const width = Math.max(1, Math.round(image.naturalWidth * ratio));
+  const height = Math.max(1, Math.round(image.naturalHeight * ratio));
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const context = canvas.getContext("2d");
+  context.drawImage(image, 0, 0, width, height);
+  return canvas.toDataURL("image/jpeg", 0.82);
 }
 
 function getLang() {
@@ -877,14 +917,6 @@ document.querySelectorAll("[data-card]").forEach((button) => {
 
 document.querySelector(".modal-backdrop").addEventListener("click", closeModal);
 document.querySelector(".modal-close").addEventListener("click", closeModal);
-document.querySelector("[data-card-prev]").addEventListener("click", (event) => {
-  event.stopPropagation();
-  switchCardModal(-1);
-});
-document.querySelector("[data-card-next]").addEventListener("click", (event) => {
-  event.stopPropagation();
-  switchCardModal(1);
-});
 document.querySelector(".modal-panel").addEventListener("pointerdown", (event) => {
   if (!modal.classList.contains("is-personal")) return;
   cardSwipeHandled = false;
@@ -902,6 +934,22 @@ document.querySelector(".modal-panel").addEventListener("pointerup", (event) => 
 document.querySelector(".modal-panel").addEventListener("click", (event) => {
   if (cardSwipeHandled) {
     cardSwipeHandled = false;
+    return;
+  }
+  if (modal.classList.contains("is-personal")) {
+    if (event.target.closest(".modal-close")) return;
+    const stackImage = event.target.closest(".modal-card-stack img");
+    if (stackImage) {
+      switchCardModal(1);
+      return;
+    }
+    const ownImage = event.target.closest("#modal-image");
+    if (ownImage && !ownImage.classList.contains("is-loading") && ownImage.currentSrc) {
+      openImageViewer(ownImage.currentSrc, ownImage.alt);
+      return;
+    }
+    const bounds = event.currentTarget.getBoundingClientRect();
+    switchCardModal(event.clientX < bounds.left + bounds.width / 2 ? -1 : 1);
     return;
   }
   const imageNode = event.target.closest("img");
@@ -1001,6 +1049,7 @@ document.querySelector("[data-admin-close]").addEventListener("click", () => {
 
 document.querySelector("[data-project-select]").addEventListener("change", (event) => {
   readAdminFields();
+  saveState();
   selectedProject = Number(event.target.value);
   fillProjectFields();
 });
@@ -1037,6 +1086,7 @@ document.querySelector("[data-project-down]").addEventListener("click", () => {
 
 document.querySelector("[data-block-select]").addEventListener("change", (event) => {
   readBlockFields();
+  saveState();
   selectedBlock = Number(event.target.value || 0);
   fillBlockFields();
 });
@@ -1081,6 +1131,7 @@ document.querySelector(".admin-body").addEventListener("input", (event) => {
   if (event.target.matches('input[type="file"]')) return;
   readAdminFields();
   readCardFields();
+  saveState();
   renderContent();
   renderProjectPreview();
 });
@@ -1089,6 +1140,7 @@ document.querySelector(".admin-body").addEventListener("change", (event) => {
   if (event.target.matches("[data-project-select], [data-card-select], input[type=\"file\"]")) return;
   readAdminFields();
   readCardFields();
+  saveState();
   renderContent();
   renderProjectPreview();
 });
@@ -1114,14 +1166,15 @@ document.querySelector("[data-reset]").addEventListener("click", () => {
 document.querySelector("[data-project-image]").addEventListener("change", (event) => {
   const file = event.target.files?.[0];
   if (!file) return;
-  const reader = new FileReader();
-  reader.addEventListener("load", () => {
-    state.projects[selectedProject][2] = String(reader.result);
-    saveState();
-    renderContent();
-    renderProjectPreview();
+  readImageFile(file).then((src) => {
+    state.projects[selectedProject][2] = src;
+    if (saveState()) {
+      renderContent();
+      renderProjectPreview();
+    }
+  }).catch(() => {
+    alert("Не получилось загрузить картинку.");
   });
-  reader.readAsDataURL(file);
 });
 
 document.querySelector("[data-project-extra-images]").addEventListener("change", (event) => {
@@ -1129,14 +1182,12 @@ document.querySelector("[data-project-extra-images]").addEventListener("change",
   if (!files.length) return;
   const project = state.projects[selectedProject];
   if (!Array.isArray(project[6])) project[6] = [];
-  Promise.all(files.map((file) => new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.addEventListener("load", () => resolve(String(reader.result)));
-    reader.readAsDataURL(file);
-  }))).then((images) => {
+  Promise.all(files.map(readImageFile)).then((images) => {
     project[6].push(...images);
     saveState();
     renderProjectPreview();
+  }).catch(() => {
+    alert("Не получилось загрузить одну из картинок.");
   });
 });
 
@@ -1144,6 +1195,7 @@ const cardSelect = document.querySelector("[data-card-select]");
 if (cardSelect) {
   cardSelect.addEventListener("change", (event) => {
     readCardFields();
+    saveState();
     selectedCard = Number(event.target.value);
     fillCardFields();
   });
@@ -1154,13 +1206,12 @@ if (cardImageInput) {
   cardImageInput.addEventListener("change", (event) => {
     const file = event.target.files?.[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.addEventListener("load", () => {
-      state.cards[selectedCard][2] = String(reader.result);
-      saveState();
-      renderContent();
+    readImageFile(file).then((src) => {
+      state.cards[selectedCard][2] = src;
+      if (saveState()) renderContent();
+    }).catch(() => {
+      alert("Не получилось загрузить картинку.");
     });
-    reader.readAsDataURL(file);
   });
 }
 
@@ -1169,13 +1220,12 @@ document.querySelector("[data-block-image]").addEventListener("change", (event) 
   if (!file) return;
   normalizeProjectBlocks();
   if (!state.projects[selectedProject][7][selectedBlock]) return;
-  const reader = new FileReader();
-  reader.addEventListener("load", () => {
-    state.projects[selectedProject][7][selectedBlock].image = String(reader.result);
-    saveState();
-    renderProjectPreview();
+  readImageFile(file).then((src) => {
+    state.projects[selectedProject][7][selectedBlock].image = src;
+    if (saveState()) renderProjectPreview();
+  }).catch(() => {
+    alert("Не получилось загрузить картинку.");
   });
-  reader.readAsDataURL(file);
 });
 
 document.addEventListener("keydown", (event) => {

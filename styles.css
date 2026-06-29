@@ -590,29 +590,26 @@ img.is-loading {
   box-shadow: none;
 }
 
-.modal-card-nav {
-  display: none;
-}
-
 .modal-card-stack {
   display: none;
 }
 
 .modal.is-personal {
   align-items: center;
-  padding: 7svh 28px;
+  padding: 9svh 28px;
 }
 
 .modal.is-personal .modal-panel {
-  width: min(1090px, calc(100vw - 180px));
-  height: auto;
-  min-height: min(620px, 76svh);
+  width: min(736px, calc(100vw - 220px));
+  height: 430px;
+  min-height: 0;
   overflow: visible;
-  display: grid;
-  grid-template-columns: minmax(320px, 0.86fr) minmax(360px, 1.14fr);
+  display: flex;
+  gap: 24px;
   align-items: stretch;
-  padding: 0;
-  border-radius: 40px;
+  padding: 4px;
+  border-radius: 32px;
+  cursor: pointer;
 }
 
 .modal.is-personal .modal-panel::before,
@@ -631,39 +628,43 @@ img.is-loading {
 .modal.is-personal .modal-card-stack img {
   position: absolute;
   top: -48px;
-  left: 40px;
-  width: 42%;
-  height: 132px;
-  object-fit: contain;
+  left: 34px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   object-position: center top;
-  border-radius: 32px 32px 0 0;
-  background: #f2f2f2;
+  border-radius: 32px;
+  background: #fff;
   box-shadow: var(--shadow);
+  opacity: 0.72;
 }
 
 .modal.is-personal .modal-card-stack img:nth-child(2) {
-  top: -22px;
-  left: 76px;
+  top: -25px;
+  left: 16px;
   z-index: 1;
+  opacity: 0.82;
 }
 
 .modal.is-personal .modal-panel > img {
-  width: 100%;
+  flex: 0 0 45%;
+  width: 45%;
   max-width: none;
-  height: min(620px, 76svh);
+  height: 100%;
   max-height: none;
   margin: 0;
-  border-radius: 40px 0 0 40px;
+  border-radius: 28px;
   object-fit: contain;
   background: #f2f2f2;
 }
 
 .modal.is-personal .modal-copy {
-  min-height: min(620px, 76svh);
+  flex: 1 1 auto;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 72px 76px 72px 48px;
+  padding: 44px 44px 44px 0;
 }
 
 .modal.is-personal .modal-copy h2 {
@@ -676,12 +677,12 @@ img.is-loading {
 }
 
 .modal.is-personal .modal-copy #modal-desc {
-  max-width: 520px;
-  margin-top: 30px;
+  max-width: 350px;
+  margin-top: 26px;
   color: #969696;
-  font-size: 26px;
-  line-height: 34px;
-  letter-spacing: -0.52px;
+  font-size: 22px;
+  line-height: 30px;
+  letter-spacing: -0.44px;
 }
 
 .modal.is-personal .modal-blocks,
@@ -689,8 +690,6 @@ img.is-loading {
 .modal.is-personal .modal-copy #modal-extra {
   display: none;
 }
-
-.modal.is-personal .modal-card-nav { display: none; }
 
 .image-viewer[hidden] {
   display: none;
@@ -1181,15 +1180,16 @@ img.is-loading {
     display: grid;
     place-items: center;
     min-height: 100svh;
-    padding: 104px 18px 54px;
+    padding: 118px 18px 62px;
     background: rgba(255, 255, 255, 0.92);
   }
   .modal.is-personal .modal-panel {
     width: min(100%, 390px);
-    min-height: auto;
+    height: auto;
+    min-height: 0;
     display: block;
     overflow: visible;
-    padding: 0;
+    padding: 4px;
     border-radius: 32px;
     box-shadow: var(--shadow);
   }
@@ -1199,12 +1199,13 @@ img.is-loading {
   .modal.is-personal .modal-card-stack img {
     top: auto;
     left: 50%;
-    bottom: -38px;
-    width: 84%;
-    height: 96px;
+    bottom: -34px;
+    width: 88%;
+    height: 150px;
     border-radius: 0 0 28px 28px;
     transform: translateX(-50%);
-    opacity: 0.62;
+    opacity: 0.52;
+    object-fit: cover;
   }
   .modal.is-personal .modal-card-stack img:nth-child(2) {
     display: none;
@@ -1219,24 +1220,21 @@ img.is-loading {
     width: 100%;
     max-width: none;
     height: auto;
-    max-height: 38svh;
-    border-radius: 32px 32px 0 0;
+    max-height: 42svh;
+    border-radius: 28px;
     object-fit: contain;
     background: #f2f2f2;
   }
   .modal.is-personal .modal-copy {
     min-height: 420px;
     display: block;
-    padding: 20px 22px 44px;
+    padding: 22px 22px 44px;
   }
   .modal.is-personal .modal-copy #modal-desc {
     margin-top: 26px;
     font-size: 22px;
     line-height: 31px;
     letter-spacing: -0.44px;
-  }
-  .modal.is-personal .modal-card-nav {
-    display: none;
   }
   .modal-block.has-image.align-left,
   .modal-block.has-image.align-right {
