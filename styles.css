@@ -434,8 +434,8 @@ img.is-loading {
 
 .modal-panel > img {
   display: block;
-  width: auto;
-  max-width: 100%;
+  width: calc(100% - 40px);
+  max-width: calc(100% - 40px);
   margin: 0 auto;
   height: auto;
   max-height: 58svh;
@@ -648,7 +648,7 @@ img.is-loading {
 }
 
 .image-viewer-controls button {
-  min-width: 46px;
+  min-width: 76px;
   height: 38px;
   padding: 0 14px;
   border-radius: 999px;

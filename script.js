@@ -29,7 +29,7 @@ const uiText = {
     contact: "Связаться",
     admin: "Кабинет",
     close: "Закрыть",
-    email: "Почта"
+    email: "Email"
   },
   en: {
     contact: "Contact me",
@@ -261,6 +261,9 @@ let viewerStartX = 0;
 let viewerStartY = 0;
 let viewerBaseX = 0;
 let viewerBaseY = 0;
+const viewerPointers = new Map();
+let viewerPinchStartDistance = 0;
+let viewerPinchStartScale = 1;
 
 function cloneDefaults() {
   return JSON.parse(JSON.stringify(defaults));
@@ -603,10 +606,13 @@ function openImageViewer(src, alt = "") {
 function closeImageViewer() {
   imageViewer.hidden = true;
   imageViewerImg.removeAttribute("src");
+  viewerPointers.clear();
+  viewerDragging = false;
+  viewerPinchStartDistance = 0;
 }
 
-function zoomImageViewer(delta) {
-  viewerScale = Math.min(4, Math.max(1, Number((viewerScale + delta).toFixed(2))));
+function setImageViewerScale(scale) {
+  viewerScale = Math.min(4, Math.max(1, Number(scale.toFixed(2))));
   if (viewerScale === 1) {
     viewerX = 0;
     viewerY = 0;
@@ -619,6 +625,13 @@ function resetImageViewer() {
   viewerX = 0;
   viewerY = 0;
   updateImageViewerTransform();
+}
+
+function getViewerPointerDistance() {
+  const points = Array.from(viewerPointers.values());
+  if (points.length < 2) return 0;
+  const [first, second] = points;
+  return Math.hypot(second.x - first.x, second.y - first.y);
 }
 
 function fillAdmin() {
@@ -774,43 +787,57 @@ document.querySelectorAll("[data-image-viewer-close]").forEach((button) => {
   button.addEventListener("click", closeImageViewer);
 });
 
-document.querySelector("[data-image-zoom-in]").addEventListener("click", () => zoomImageViewer(0.35));
-document.querySelector("[data-image-zoom-out]").addEventListener("click", () => zoomImageViewer(-0.35));
-document.querySelector("[data-image-zoom-reset]").addEventListener("click", resetImageViewer);
-
 imageViewerImg.addEventListener("pointerdown", (event) => {
+  viewerPointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+  imageViewerImg.setPointerCapture(event.pointerId);
+  if (viewerPointers.size === 2) {
+    viewerDragging = false;
+    viewerPinchStartDistance = getViewerPointerDistance();
+    viewerPinchStartScale = viewerScale;
+    return;
+  }
   if (viewerScale <= 1) return;
   viewerDragging = true;
   viewerStartX = event.clientX;
   viewerStartY = event.clientY;
   viewerBaseX = viewerX;
   viewerBaseY = viewerY;
-  imageViewerImg.setPointerCapture(event.pointerId);
 });
 
 imageViewerImg.addEventListener("pointermove", (event) => {
+  if (!viewerPointers.has(event.pointerId)) return;
+  viewerPointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+  if (viewerPointers.size >= 2 && viewerPinchStartDistance > 0) {
+    const distance = getViewerPointerDistance();
+    setImageViewerScale(viewerPinchStartScale * (distance / viewerPinchStartDistance));
+    return;
+  }
   if (!viewerDragging) return;
   viewerX = viewerBaseX + event.clientX - viewerStartX;
   viewerY = viewerBaseY + event.clientY - viewerStartY;
   updateImageViewerTransform();
 });
 
-imageViewerImg.addEventListener("pointerup", () => {
+imageViewerImg.addEventListener("pointerup", (event) => {
+  viewerPointers.delete(event.pointerId);
   viewerDragging = false;
+  viewerPinchStartDistance = 0;
 });
 
-imageViewerImg.addEventListener("pointercancel", () => {
+imageViewerImg.addEventListener("pointercancel", (event) => {
+  viewerPointers.delete(event.pointerId);
   viewerDragging = false;
+  viewerPinchStartDistance = 0;
 });
 
 imageViewerImg.addEventListener("dblclick", () => {
   if (viewerScale > 1) resetImageViewer();
-  else zoomImageViewer(1);
+  else setImageViewerScale(2);
 });
 
 imageViewer.addEventListener("wheel", (event) => {
   event.preventDefault();
-  zoomImageViewer(event.deltaY < 0 ? 0.25 : -0.25);
+  setImageViewerScale(viewerScale + (event.deltaY < 0 ? 0.25 : -0.25));
 }, { passive: false });
 
 const adminButton = document.querySelector("[data-admin-open]");
