@@ -319,10 +319,9 @@ function mergeCards(savedCards) {
     const savedCard = savedCards[index];
     if (!Array.isArray(savedCard) || savedCard[3] === "Editable portfolio card.") return card;
     const merged = [...card];
-    savedCard.slice(0, 4).forEach((value, valueIndex) => {
-      merged[valueIndex] = value;
+    savedCard.slice(0, 5).forEach((value, valueIndex) => {
+      if (value !== undefined && value !== null) merged[valueIndex] = value;
     });
-    merged[4] = card[4];
     return merged;
   });
 }
@@ -561,7 +560,7 @@ function getCardModalItem(index) {
   return [
     card[0] || defaultCard?.[0] || "",
     card[1] || defaultCard?.[1] || "",
-    card[2] || cardModalPhotos[index] || defaultCard?.[2] || "",
+    card[4] || cardModalPhotos[index] || defaultCard?.[2] || "",
     card[3] || (defaultCard ? defaultCard[3] : "") || "",
     88,
     "",
@@ -1230,7 +1229,7 @@ if (cardImageInput) {
     const file = event.target.files?.[0];
     if (!file) return;
     readImageFile(file).then((src) => {
-      state.cards[selectedCard][2] = src;
+      state.cards[selectedCard][4] = src;
       if (saveState()) renderContent();
     }).catch(() => {
       alert("Не получилось загрузить картинку.");
