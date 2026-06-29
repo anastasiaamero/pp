@@ -408,10 +408,10 @@ img.is-loading {
   inset: 0;
   z-index: 20;
   display: grid;
-  align-items: start;
+  align-items: center;
   justify-items: center;
   overflow: auto;
-  padding: 16px 24px;
+  padding: 42px 24px;
 }
 
 .modal-backdrop {
@@ -423,10 +423,10 @@ img.is-loading {
 
 .modal-panel {
   position: relative;
-  width: min(912px, calc(100vw - 48px));
-  height: min(var(--project-modal-height, 88svh), calc(100svh - 32px));
+  width: min(1180px, calc(100vw - 160px));
+  height: min(var(--project-modal-height, 76svh), 76svh, calc(100svh - 84px));
   overflow: auto;
-  padding: 86px 32px 32px;
+  padding: 44px 72px;
   border-radius: 32px;
   background: #fff;
   box-shadow: var(--shadow);
@@ -449,7 +449,9 @@ img.is-loading {
 }
 
 .modal-copy {
-  padding: 18px 0 0;
+  width: min(704px, 100%);
+  margin: 0 auto;
+  padding: 0;
   text-transform: none;
 }
 
@@ -458,8 +460,8 @@ img.is-loading {
 
 .modal-copy h2 {
   font-family: var(--sans);
-  font-size: 46px;
-  line-height: 38px;
+  font-size: 36px;
+  line-height: 32px;
   letter-spacing: -1.2px;
   font-weight: 800;
 }
@@ -513,15 +515,16 @@ img.is-loading {
 }
 
 .modal-blocks {
+  width: min(704px, 100%);
   display: grid;
   gap: 12px;
-  margin-top: 40px;
+  margin: 24px auto 0;
 }
 
 .modal-block {
   display: grid;
-  gap: 14px;
-  padding: 20px;
+  gap: 12px;
+  padding: 16px;
   border-radius: 22px;
   background: #f7f7f7;
 }
@@ -539,7 +542,7 @@ img.is-loading {
 .modal-block h3 {
   margin: 0;
   font-family: var(--sans);
-  font-size: 28px;
+  font-size: 24px;
   line-height: 1;
   letter-spacing: -0.9px;
   font-weight: 800;
@@ -547,7 +550,7 @@ img.is-loading {
 }
 
 .modal-block p {
-  margin: 10px 0 0;
+  margin: 8px 0 0;
   font-family: var(--sans);
   font-size: 17px;
   line-height: 24px;
@@ -568,8 +571,8 @@ img.is-loading {
 
 .modal-close {
   position: absolute;
-  top: 18px;
-  right: 24px;
+  top: 24px;
+  right: 32px;
   z-index: 2;
   padding: 8px 14px;
   border-radius: 999px;
@@ -591,18 +594,22 @@ img.is-loading {
   display: none;
 }
 
+.modal-card-stack {
+  display: none;
+}
+
 .modal.is-personal {
   align-items: center;
   padding: 7svh 28px;
 }
 
 .modal.is-personal .modal-panel {
-  width: min(1160px, calc(100vw - 112px));
+  width: min(1090px, calc(100vw - 180px));
   height: auto;
   min-height: min(620px, 76svh);
   overflow: visible;
   display: grid;
-  grid-template-columns: minmax(320px, 0.95fr) minmax(360px, 1.05fr);
+  grid-template-columns: minmax(320px, 0.86fr) minmax(360px, 1.14fr);
   align-items: stretch;
   padding: 0;
   border-radius: 40px;
@@ -610,24 +617,34 @@ img.is-loading {
 
 .modal.is-personal .modal-panel::before,
 .modal.is-personal .modal-panel::after {
-  content: "";
+  content: none;
+}
+
+.modal.is-personal .modal-card-stack {
   position: absolute;
   inset: 0;
   z-index: -1;
-  border-radius: inherit;
-  background: #fff;
-  box-shadow: var(--shadow);
+  display: block;
   pointer-events: none;
 }
 
-.modal.is-personal .modal-panel::before {
-  transform: translate(-34px, -42px) scale(0.94);
-  opacity: 0.82;
+.modal.is-personal .modal-card-stack img {
+  position: absolute;
+  top: -48px;
+  left: 40px;
+  width: 42%;
+  height: 132px;
+  object-fit: contain;
+  object-position: center top;
+  border-radius: 32px 32px 0 0;
+  background: #f2f2f2;
+  box-shadow: var(--shadow);
 }
 
-.modal.is-personal .modal-panel::after {
-  transform: translate(36px, -24px) scale(0.97);
-  opacity: 0.9;
+.modal.is-personal .modal-card-stack img:nth-child(2) {
+  top: -22px;
+  left: 76px;
+  z-index: 1;
 }
 
 .modal.is-personal .modal-panel > img {
@@ -637,7 +654,8 @@ img.is-loading {
   max-height: none;
   margin: 0;
   border-radius: 40px 0 0 40px;
-  object-fit: cover;
+  object-fit: contain;
+  background: #f2f2f2;
 }
 
 .modal.is-personal .modal-copy {
@@ -672,25 +690,7 @@ img.is-loading {
   display: none;
 }
 
-.modal.is-personal .modal-card-nav {
-  position: absolute;
-  top: 50%;
-  z-index: 3;
-  display: grid;
-  place-items: center;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.88);
-  color: #fff;
-  font-family: var(--sans);
-  font-size: 30px;
-  line-height: 1;
-  transform: translateY(-50%);
-}
-
-.modal.is-personal .modal-card-prev { left: -24px; }
-.modal.is-personal .modal-card-next { right: -24px; }
+.modal.is-personal .modal-card-nav { display: none; }
 
 .image-viewer[hidden] {
   display: none;
@@ -1181,7 +1181,7 @@ img.is-loading {
     display: grid;
     place-items: center;
     min-height: 100svh;
-    padding: 90px 18px 44px;
+    padding: 104px 18px 54px;
     background: rgba(255, 255, 255, 0.92);
   }
   .modal.is-personal .modal-panel {
@@ -1193,13 +1193,21 @@ img.is-loading {
     border-radius: 32px;
     box-shadow: var(--shadow);
   }
-  .modal.is-personal .modal-panel::before {
-    transform: translate(0, 30px) scale(0.9);
-    opacity: 0.5;
+  .modal.is-personal .modal-card-stack {
+    display: block;
   }
-  .modal.is-personal .modal-panel::after {
-    transform: translate(0, 16px) scale(0.96);
-    opacity: 0.72;
+  .modal.is-personal .modal-card-stack img {
+    top: auto;
+    left: 50%;
+    bottom: -38px;
+    width: 84%;
+    height: 96px;
+    border-radius: 0 0 28px 28px;
+    transform: translateX(-50%);
+    opacity: 0.62;
+  }
+  .modal.is-personal .modal-card-stack img:nth-child(2) {
+    display: none;
   }
   .modal.is-personal .modal-close {
     position: fixed;
@@ -1210,9 +1218,11 @@ img.is-loading {
   .modal.is-personal .modal-panel > img {
     width: 100%;
     max-width: none;
-    height: 260px;
+    height: auto;
+    max-height: 38svh;
     border-radius: 32px 32px 0 0;
-    object-fit: cover;
+    object-fit: contain;
+    background: #f2f2f2;
   }
   .modal.is-personal .modal-copy {
     min-height: 420px;
@@ -1226,15 +1236,8 @@ img.is-loading {
     letter-spacing: -0.44px;
   }
   .modal.is-personal .modal-card-nav {
-    top: auto;
-    bottom: 18px;
-    width: 42px;
-    height: 42px;
-    font-size: 26px;
-    transform: none;
+    display: none;
   }
-  .modal.is-personal .modal-card-prev { left: 18px; }
-  .modal.is-personal .modal-card-next { right: 18px; }
   .modal-block.has-image.align-left,
   .modal-block.has-image.align-right {
     grid-template-columns: 1fr;

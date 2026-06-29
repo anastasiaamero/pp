@@ -249,6 +249,7 @@ const modalSubtitle = document.querySelector("#modal-subtitle");
 const modalDesc = document.querySelector("#modal-desc");
 const modalExtra = document.querySelector("#modal-extra");
 const modalGallery = document.querySelector("#modal-gallery");
+const modalCardStackImages = document.querySelectorAll("[data-card-stack-image]");
 const modalBlocks = document.createElement("div");
 modalBlocks.className = "modal-blocks";
 modalGallery.before(modalBlocks);
@@ -523,6 +524,15 @@ function switchCardModal(direction) {
   openCardModal(activeCardModalIndex + direction);
 }
 
+function renderCardStackImages(index) {
+  modalCardStackImages.forEach((imageNode, stackIndex) => {
+    const cardIndex = (index + stackIndex + 1) % state.cards.length;
+    const card = state.cards[cardIndex] || defaults.cards[cardIndex];
+    const src = cardModalPhotos[cardIndex] || card?.[2] || "";
+    if (src) setImageSource(imageNode, src, "");
+  });
+}
+
 function openModal(item, options = {}) {
   item = localizeModalItem(item);
   const [title, subtitle, image, desc, height = 88, extraText = "", extraImages = [], blocks = [], modalPhoto] = item;
@@ -530,6 +540,7 @@ function openModal(item, options = {}) {
   const modalImageSrc = isPersonalCard ? image : modalPhoto || image;
   const modalHeight = isPersonalCard ? 88 : height;
   modal.classList.toggle("is-personal", isPersonalCard);
+  if (isPersonalCard) renderCardStackImages(activeCardModalIndex);
   modalImage.hidden = !isPersonalCard;
   if (isPersonalCard) {
     setImageSource(modalImage, modalImageSrc, `${title} ${subtitle}`.trim());
