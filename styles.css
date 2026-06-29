@@ -421,7 +421,7 @@ img {
   width: min(848px, calc(100vw - 32px));
   height: min(var(--project-modal-height, 88svh), calc(100svh - 32px));
   overflow: auto;
-  padding: 8px;
+  padding: 58px 8px 8px;
   border-radius: 32px;
   background: #fff;
   box-shadow: var(--shadow);
@@ -552,7 +552,7 @@ img {
 
 .modal-close {
   position: absolute;
-  top: 20px;
+  top: 14px;
   right: 20px;
   z-index: 2;
   padding: 8px 14px;
