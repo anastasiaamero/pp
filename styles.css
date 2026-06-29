@@ -444,6 +444,10 @@ img.is-loading {
   cursor: zoom-in;
 }
 
+.modal-panel > img[hidden] {
+  display: none;
+}
+
 .modal-copy {
   padding: 18px 20px 22px;
   text-transform: none;
@@ -624,9 +628,10 @@ img.is-loading {
   box-shadow: 0 28px 90px rgba(0, 0, 0, 0.22);
   cursor: grab;
   user-select: none;
-  transform: translate(var(--viewer-x, 0px), var(--viewer-y, 0px)) scale(var(--viewer-scale, 1));
+  touch-action: none;
+  will-change: transform;
+  transform: translate3d(var(--viewer-x, 0px), var(--viewer-y, 0px), 0) scale(var(--viewer-scale, 1));
   transform-origin: center;
-  transition: transform 0.08s ease-out;
 }
 
 .image-viewer-stage img:active {

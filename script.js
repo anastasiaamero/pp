@@ -252,6 +252,7 @@ const modalBlocks = document.createElement("div");
 modalBlocks.className = "modal-blocks";
 modalGallery.before(modalBlocks);
 const imageViewer = document.querySelector("[data-image-viewer]");
+const imageViewerStage = document.querySelector(".image-viewer-stage");
 const imageViewerImg = document.querySelector("[data-image-viewer-img]");
 let viewerScale = 1;
 let viewerX = 0;
@@ -467,7 +468,12 @@ function openModal(item) {
   const isPersonalCard = typeof image === "string" && image.includes("/cards/admin-card-");
   const modalImageSrc = isPersonalCard ? height || image : modalPhoto || image;
   const modalHeight = isPersonalCard ? 88 : height;
-  setImageSource(modalImage, modalImageSrc, `${title} ${subtitle}`.trim());
+  modalImage.hidden = !isPersonalCard;
+  if (isPersonalCard) {
+    setImageSource(modalImage, modalImageSrc, `${title} ${subtitle}`.trim());
+  } else {
+    modalImage.removeAttribute("src");
+  }
   modalTitle.textContent = title;
   modalTitle.hidden = !title;
   modalSubtitle.textContent = subtitle;
@@ -787,9 +793,9 @@ document.querySelectorAll("[data-image-viewer-close]").forEach((button) => {
   button.addEventListener("click", closeImageViewer);
 });
 
-imageViewerImg.addEventListener("pointerdown", (event) => {
+imageViewerStage.addEventListener("pointerdown", (event) => {
   viewerPointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
-  imageViewerImg.setPointerCapture(event.pointerId);
+  imageViewerStage.setPointerCapture(event.pointerId);
   if (viewerPointers.size === 2) {
     viewerDragging = false;
     viewerPinchStartDistance = getViewerPointerDistance();
@@ -804,7 +810,7 @@ imageViewerImg.addEventListener("pointerdown", (event) => {
   viewerBaseY = viewerY;
 });
 
-imageViewerImg.addEventListener("pointermove", (event) => {
+imageViewerStage.addEventListener("pointermove", (event) => {
   if (!viewerPointers.has(event.pointerId)) return;
   viewerPointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
   if (viewerPointers.size >= 2 && viewerPinchStartDistance > 0) {
@@ -818,13 +824,13 @@ imageViewerImg.addEventListener("pointermove", (event) => {
   updateImageViewerTransform();
 });
 
-imageViewerImg.addEventListener("pointerup", (event) => {
+imageViewerStage.addEventListener("pointerup", (event) => {
   viewerPointers.delete(event.pointerId);
   viewerDragging = false;
   viewerPinchStartDistance = 0;
 });
 
-imageViewerImg.addEventListener("pointercancel", (event) => {
+imageViewerStage.addEventListener("pointercancel", (event) => {
   viewerPointers.delete(event.pointerId);
   viewerDragging = false;
   viewerPinchStartDistance = 0;
