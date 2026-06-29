@@ -236,6 +236,7 @@ let state = readState();
 let selectedProject = 0;
 let selectedBlock = 0;
 let selectedCard = 0;
+let activeCardModalIndex = 0;
 const adminRequested = new URLSearchParams(window.location.search).get("admin") === "1" || window.location.hash === "#admin";
 if (adminRequested) localStorage.setItem("adminAccess", "1");
 const isLocalPreview = window.location.protocol === "file:" || window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
@@ -265,6 +266,9 @@ let viewerBaseY = 0;
 const viewerPointers = new Map();
 let viewerPinchStartDistance = 0;
 let viewerPinchStartScale = 1;
+let cardSwipeStartX = 0;
+let cardSwipeStartY = 0;
+let cardSwipeHandled = false;
 
 function cloneDefaults() {
   return JSON.parse(JSON.stringify(defaults));
@@ -510,12 +514,22 @@ function getCardModalItem(index) {
   ];
 }
 
-function openModal(item) {
+function openCardModal(index) {
+  activeCardModalIndex = (index + state.cards.length) % state.cards.length;
+  openModal(getCardModalItem(activeCardModalIndex), { personal: true });
+}
+
+function switchCardModal(direction) {
+  openCardModal(activeCardModalIndex + direction);
+}
+
+function openModal(item, options = {}) {
   item = localizeModalItem(item);
   const [title, subtitle, image, desc, height = 88, extraText = "", extraImages = [], blocks = [], modalPhoto] = item;
-  const isPersonalCard = typeof image === "string" && (image.includes("/cards/admin-card-") || image.includes("/cards/photo-"));
+  const isPersonalCard = options.personal || (typeof image === "string" && (image.includes("/cards/admin-card-") || image.includes("/cards/photo-")));
   const modalImageSrc = isPersonalCard ? image : modalPhoto || image;
   const modalHeight = isPersonalCard ? 88 : height;
+  modal.classList.toggle("is-personal", isPersonalCard);
   modalImage.hidden = !isPersonalCard;
   if (isPersonalCard) {
     setImageSource(modalImage, modalImageSrc, `${title} ${subtitle}`.trim());
@@ -636,6 +650,7 @@ function renderProjectPreview() {
 
 function closeModal() {
   modal.hidden = true;
+  modal.classList.remove("is-personal");
   modalImage.removeAttribute("src");
   document.documentElement.style.overflow = "";
   document.body.style.overflow = "";
@@ -846,12 +861,38 @@ function readBlockFields() {
 }
 
 document.querySelectorAll("[data-card]").forEach((button) => {
-  button.addEventListener("click", () => openModal(getCardModalItem(Number(button.dataset.card))));
+  button.addEventListener("click", () => openCardModal(Number(button.dataset.card)));
 });
 
 document.querySelector(".modal-backdrop").addEventListener("click", closeModal);
 document.querySelector(".modal-close").addEventListener("click", closeModal);
+document.querySelector("[data-card-prev]").addEventListener("click", (event) => {
+  event.stopPropagation();
+  switchCardModal(-1);
+});
+document.querySelector("[data-card-next]").addEventListener("click", (event) => {
+  event.stopPropagation();
+  switchCardModal(1);
+});
+document.querySelector(".modal-panel").addEventListener("pointerdown", (event) => {
+  if (!modal.classList.contains("is-personal")) return;
+  cardSwipeHandled = false;
+  cardSwipeStartX = event.clientX;
+  cardSwipeStartY = event.clientY;
+});
+document.querySelector(".modal-panel").addEventListener("pointerup", (event) => {
+  if (!modal.classList.contains("is-personal")) return;
+  const deltaX = event.clientX - cardSwipeStartX;
+  const deltaY = event.clientY - cardSwipeStartY;
+  if (Math.abs(deltaX) < 54 || Math.abs(deltaX) < Math.abs(deltaY) * 1.4) return;
+  cardSwipeHandled = true;
+  switchCardModal(deltaX < 0 ? 1 : -1);
+});
 document.querySelector(".modal-panel").addEventListener("click", (event) => {
+  if (cardSwipeHandled) {
+    cardSwipeHandled = false;
+    return;
+  }
   const imageNode = event.target.closest("img");
   if (!imageNode || imageNode.classList.contains("is-loading") || !imageNode.currentSrc) return;
   openImageViewer(imageNode.currentSrc, imageNode.alt);
