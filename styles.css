@@ -577,6 +577,26 @@ img.is-loading {
   cursor: zoom-in;
 }
 
+.modal-block-btn,
+.project-preview-block-btn {
+  display: inline-flex;
+  margin-top: 14px;
+  padding: 10px 24px;
+  border-radius: 999px;
+  background: #000;
+  color: #fff;
+  font-family: var(--display);
+  font-size: 16px;
+  line-height: 1;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.modal-block-btn:hover,
+.project-preview-block-btn:hover {
+  background: #333;
+}
+
 .modal-close {
   position: sticky;
   top: 20px;

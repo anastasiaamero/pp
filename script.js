@@ -627,6 +627,15 @@ function openModal(item, options = {}) {
       text.textContent = block.text;
       copy.append(text);
     }
+    if (block.link && block.linkText) {
+      const btn = document.createElement("a");
+      btn.href = block.link;
+      btn.target = "_blank";
+      btn.rel = "noopener";
+      btn.className = "modal-block-btn";
+      btn.textContent = block.linkText;
+      copy.append(btn);
+    }
     blockNode.append(copy);
 
     if (block.image) {
@@ -689,6 +698,15 @@ function renderProjectPreview() {
       const text = document.createElement("p");
       text.textContent = block.text;
       copy.append(text);
+    }
+    if (block.link && block.linkText) {
+      const btn = document.createElement("a");
+      btn.href = block.link;
+      btn.target = "_blank";
+      btn.rel = "noopener";
+      btn.className = "project-preview-block-btn";
+      btn.textContent = block.linkText;
+      copy.append(btn);
     }
     blockNode.append(copy);
 
@@ -896,6 +914,8 @@ function fillBlockFields() {
   document.querySelector('[data-block-field="heading"]').value = block?.heading || "";
   document.querySelector('[data-block-field="text"]').value = block?.text || "";
   document.querySelector('[data-block-field="align"]').value = block?.align || "full";
+  document.querySelector('[data-block-field="linkText"]').value = block?.linkText || "";
+  document.querySelector('[data-block-field="link"]').value = block?.link || "";
   renderProjectPreview();
 }
 
@@ -931,6 +951,10 @@ function readBlockFields() {
   if (textInput) block.text = textInput.value.trim();
   const alignInput = document.querySelector('[data-block-field="align"]');
   if (alignInput) block.align = alignInput.value.trim();
+  const linkTextInput = document.querySelector('[data-block-field="linkText"]');
+  if (linkTextInput) block.linkText = linkTextInput.value.trim();
+  const linkInput = document.querySelector('[data-block-field="link"]');
+  if (linkInput) block.link = linkInput.value.trim();
 }
 
 document.querySelectorAll("[data-card]").forEach((button) => {
