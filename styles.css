@@ -64,12 +64,17 @@ button {
   color: inherit;
   background: transparent;
   font: inherit;
+  -webkit-tap-highlight-color: transparent;
 }
 
 img {
   display: block;
   max-width: 100%;
   height: auto;
+}
+
+img.is-loading {
+  opacity: 0;
 }
 
 ::selection {
@@ -421,19 +426,22 @@ img {
   width: min(848px, calc(100vw - 32px));
   height: min(var(--project-modal-height, 88svh), calc(100svh - 32px));
   overflow: auto;
-  padding: 58px 8px 8px;
+  padding: 78px 8px 8px;
   border-radius: 32px;
   background: #fff;
   box-shadow: var(--shadow);
 }
 
 .modal-panel > img {
+  display: block;
   width: auto;
   max-width: 100%;
   margin: 0 auto;
   height: auto;
   max-height: 58svh;
   border-radius: 24px;
+  background: #e9e9e9;
+  cursor: zoom-in;
 }
 
 .modal-copy {
@@ -496,6 +504,8 @@ img {
   margin: 0 auto;
   height: auto;
   border-radius: 20px;
+  background: #e9e9e9;
+  cursor: zoom-in;
 }
 
 .modal-blocks {
@@ -548,11 +558,13 @@ img {
   margin: 0 auto;
   height: auto;
   border-radius: 18px;
+  background: #e9e9e9;
+  cursor: zoom-in;
 }
 
 .modal-close {
   position: absolute;
-  top: 14px;
+  top: 18px;
   right: 20px;
   z-index: 2;
   padding: 8px 14px;
@@ -563,6 +575,89 @@ img {
   font-size: 20px;
   line-height: 18px;
   text-transform: uppercase;
+}
+
+.modal-close:focus,
+.modal-close:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.image-viewer[hidden] {
+  display: none;
+}
+
+.image-viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(32px);
+  overflow: hidden;
+}
+
+.image-viewer-backdrop {
+  position: absolute;
+  inset: 0;
+}
+
+.image-viewer-stage {
+  position: relative;
+  z-index: 1;
+  width: 100vw;
+  height: 100svh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  touch-action: none;
+}
+
+.image-viewer-stage img {
+  max-width: 92vw;
+  max-height: 82svh;
+  width: auto;
+  height: auto;
+  border-radius: 18px;
+  background: #e9e9e9;
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.22);
+  cursor: grab;
+  user-select: none;
+  transform: translate(var(--viewer-x, 0px), var(--viewer-y, 0px)) scale(var(--viewer-scale, 1));
+  transform-origin: center;
+  transition: transform 0.08s ease-out;
+}
+
+.image-viewer-stage img:active {
+  cursor: grabbing;
+}
+
+.image-viewer-controls {
+  position: fixed;
+  left: 50%;
+  bottom: max(18px, env(safe-area-inset-bottom));
+  z-index: 2;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.16);
+  transform: translateX(-50%);
+}
+
+.image-viewer-controls button {
+  min-width: 46px;
+  height: 38px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: #000;
+  color: #fff;
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 38px;
 }
 
 .admin-panel {

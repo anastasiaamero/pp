@@ -24,6 +24,138 @@ const cardModalPhotos = [
   "./assets/cards/photo-4.jpg"
 ];
 
+const uiText = {
+  ru: {
+    contact: "Связаться",
+    admin: "Кабинет",
+    close: "Закрыть",
+    email: "Почта"
+  },
+  en: {
+    contact: "Contact me",
+    admin: "Admin",
+    close: "Close",
+    email: "Email"
+  }
+};
+
+const projectTranslations = {
+  "СБОЛ.про": {
+    title: "SBOL.pro",
+    subtitle: "Platform branding",
+    desc: "Identity and visual system for the unified SBOL.pro platform.",
+    blocks: [
+      ["Context", "Identity and visual system for the unified SBOL.pro platform."],
+      ["Task", "Create a modern, flexible and scalable visual system."],
+      ["Role", "Concept, logo, visual language, templates, guidebook and AI graphics."],
+      ["Solution", "I developed a system based on fluid lines, 3D forms and a strict grid. I assembled templates, typography, composition rules and visual principles."],
+      ["Result", "The system is used by product teams and became the basis for dozens of communication materials."]
+    ]
+  },
+  "AI-библиотека": {
+    title: "AI Library",
+    subtitle: "Image library",
+    desc: "A set of AI visuals in the platform's brand style.",
+    blocks: [
+      ["Context", "Creation of an image library in the platform's brand style."],
+      ["Task", "Create a set of visuals for interfaces, presentations and media."],
+      ["Role", "Concept, generation, retouching and image systematization."],
+      ["Solution", "I developed a visual language based on brand lines and forms, created a series of AI images and organized them by category."],
+      ["Result", "The library is used by teams for presentations and interfaces."]
+    ]
+  },
+  "Мерч СБОЛ": {
+    title: "SBOL Merch",
+    subtitle: "Identity on physical media",
+    desc: "Merch for the SBOL.pro platform team.",
+    blocks: [
+      ["Context", "The platform identity had to be transferred to physical media."],
+      ["Task", "Make the merch recognizable, modern and connected to the product visual system."],
+      ["Role", "Concept, design, AI generation and production preparation."],
+      ["Solution", "I adapted brand elements for physical items, assembled composition options and prepared layouts for team use."],
+      ["Result", "The merch was used at internal events and in team communications."]
+    ]
+  },
+  "ИИ-офис": {
+    title: "AI Office",
+    subtitle: "Card concepts",
+    desc: "Visual card concepts for Sber's AI office.",
+    blocks: [
+      ["Context", "Internal card products needed a visual language connected with AI and technology."],
+      ["Task", "Find an expressive visual approach for a card series and prepare options for further development."],
+      ["Role", "Concept, visual language, 3D forms, AI generation and variant preparation."],
+      ["Solution", "I assembled visual directions, generated graphics and adapted them to card formats."],
+      ["Result", "Concepts and a visual base were prepared for further development."]
+    ]
+  },
+  "Соц. сети Domo": {
+    title: "Domo Social",
+    subtitle: "Content and templates",
+    desc: "Materials and templates for Domo communications.",
+    blocks: [
+      ["Context", "Visual system and content for an architectural studio."],
+      ["Task", "Create a recognizable style for regular posts and communications."],
+      ["Role", "Concept, visual language, templates and material design."],
+      ["Solution", "I developed templates, compositions and visual principles for social media."],
+      ["Result", "The materials became the basis for Domo's regular visual language."]
+    ]
+  },
+  "Altanina LLC": {
+    title: "Altanina LLC",
+    subtitle: "Business identity",
+    desc: "Identity for a small business in the USA.",
+    blocks: [
+      ["Context", "A small business needed an identity that could be used across media, website and communications."],
+      ["Task", "Create a clear and flexible visual image for the brand."],
+      ["Role", "Concept, logo, characters, media and visual system."],
+      ["Solution", "I assembled brand elements, logo options, characters and examples of use across media."],
+      ["Result", "The identity is used in company materials and communications."]
+    ]
+  },
+  "Сивил стиль": {
+    title: "Sivil Style",
+    subtitle: "Brand update",
+    desc: "Brand style update for Sivil.",
+    blocks: [
+      ["Context", "The brand needed to update its visual language and make communications more modern."],
+      ["Task", "Preserve brand recognition while updating the style for new media."],
+      ["Role", "Concept, visual language, templates and media."],
+      ["Solution", "I updated compositions, typography and rules for applying the brand style in materials."],
+      ["Result", "The style became the basis for brand media and communications."]
+    ]
+  },
+  "Апекс соцсети": {
+    title: "Apex Social",
+    subtitle: "Content identity",
+    desc: "Visual system for Apex social media.",
+    blocks: [
+      ["Context", "The project needed a recognizable theme for Instagram and Telegram."],
+      ["Task", "Adapt the identity for regular content and different publication formats."],
+      ["Role", "Concept, templates, visual language and content design."],
+      ["Solution", "I assembled templates, composition rules and visual techniques for social media."],
+      ["Result", "A unified visual style appeared for social media."]
+    ]
+  },
+  "Визуал Умного помощника": {
+    title: "Assistant Visual",
+    subtitle: "Posts and media",
+    desc: "Content materials for a smart assistant project.",
+    blocks: [
+      ["Context", "The visual system had to be adapted for different post and publication formats."],
+      ["Task", "Assemble a clear set of materials that can be quickly used in communications."],
+      ["Role", "Templates, publication design, visual selection and material assembly."],
+      ["Solution", "I adapted the existing visual approach to content formats and assembled materials in a unified style."],
+      ["Result", "The content became more consistent and recognizable within one brand."]
+    ]
+  }
+};
+
+const cardTextTranslations = {
+  "./assets/cards/photo-1.jpg": "In my free time I study English, practice yoga, walk with my dog and travel. I like discovering new places, people and impressions.",
+  "./assets/cards/photo-3.jpg": "I have been working in design for more than 4 years. For the last 2 years I have worked as a designer at Sber, one of the largest technology companies. I have taken part in projects of different scales: from social media content to websites and digital products. I also have experience creating identities for both internal projects of a large company and small startups.",
+  "./assets/cards/photo-4.jpg": "I run a channel about neural networks, where I cover new tools, share practical ways to use AI and show my own projects."
+};
+
 const defaults = {
   lang: "ru",
   heroByLang: heroByLangDefaults,
@@ -119,6 +251,16 @@ const modalGallery = document.querySelector("#modal-gallery");
 const modalBlocks = document.createElement("div");
 modalBlocks.className = "modal-blocks";
 modalGallery.before(modalBlocks);
+const imageViewer = document.querySelector("[data-image-viewer]");
+const imageViewerImg = document.querySelector("[data-image-viewer-img]");
+let viewerScale = 1;
+let viewerX = 0;
+let viewerY = 0;
+let viewerDragging = false;
+let viewerStartX = 0;
+let viewerStartY = 0;
+let viewerBaseX = 0;
+let viewerBaseY = 0;
 
 function cloneDefaults() {
   return JSON.parse(JSON.stringify(defaults));
@@ -203,6 +345,69 @@ function saveState() {
   localStorage.setItem(LANGUAGE_KEY, state.lang);
 }
 
+function getLang() {
+  return state.lang === "en" ? "en" : "ru";
+}
+
+function setImageSource(imageNode, src, alt = "") {
+  if (!imageNode || !src) return;
+  imageNode.classList.add("is-loading");
+  imageNode.removeAttribute("src");
+  imageNode.alt = alt;
+  imageNode.onload = () => imageNode.classList.remove("is-loading");
+  imageNode.onerror = () => imageNode.classList.remove("is-loading");
+  requestAnimationFrame(() => {
+    imageNode.src = src;
+    if (imageNode.complete) imageNode.classList.remove("is-loading");
+  });
+}
+
+function localizeProject(project) {
+  if (getLang() !== "en") return project;
+  const translation = projectTranslations[project[0]];
+  if (!translation) return project;
+  const blocks = Array.isArray(project[7]) ? project[7].map((block, index) => {
+    const blockTranslation = translation.blocks[index];
+    if (!blockTranslation) return block;
+    return {
+      ...block,
+      heading: blockTranslation[0],
+      text: blockTranslation[1]
+    };
+  }) : [];
+  return [
+    translation.title,
+    translation.subtitle,
+    project[2],
+    translation.desc,
+    project[4],
+    project[5],
+    project[6],
+    blocks,
+    project[8]
+  ];
+}
+
+function localizeModalItem(item) {
+  const localizedProject = localizeProject(item);
+  if (localizedProject !== item) return localizedProject;
+  if (getLang() !== "en") return item;
+  const translatedCardText = cardTextTranslations[item[2]];
+  if (!translatedCardText) return item;
+  const localized = [...item];
+  localized[3] = translatedCardText;
+  return localized;
+}
+
+function renderUiText() {
+  const text = uiText[getLang()];
+  document.querySelectorAll("[data-ui]").forEach((node) => {
+    const key = node.dataset.ui;
+    if (text[key]) node.textContent = text[key];
+    if (key === "close") node.setAttribute("aria-label", text[key]);
+  });
+}
+
 function renderContent() {
   state.hero = state.heroByLang[state.lang] || state.heroByLang.ru;
   state.hero.forEach((line, index) => {
@@ -215,6 +420,7 @@ function renderContent() {
   document.documentElement.lang = state.lang;
   const langToggle = document.querySelector("[data-lang-toggle]");
   if (langToggle) langToggle.textContent = state.lang === "ru" ? "En" : "Ru";
+  renderUiText();
 
   document.querySelectorAll("[data-project]").forEach((card) => {
     const index = Number(card.dataset.project);
@@ -222,25 +428,19 @@ function renderContent() {
   });
 
   state.projects.forEach((project, index) => {
-    const [title, subtitle, image] = project;
+    const [title, subtitle, image] = localizeProject(project);
     const titleNode = document.querySelector(`[data-project-title="${index}"]`);
     const subtitleNode = document.querySelector(`[data-project-subtitle="${index}"]`);
     const imageNode = document.querySelector(`[data-project-image-view="${index}"]`);
     if (titleNode) titleNode.textContent = title;
     if (subtitleNode) subtitleNode.textContent = subtitle;
-    if (imageNode) {
-      imageNode.src = image;
-      imageNode.alt = title;
-    }
+    setImageSource(imageNode, image, title);
   });
 
   state.cards.forEach((card, index) => {
     const [title, , image] = card;
     const imageNode = document.querySelector(`[data-card-image-view="${index}"]`);
-    if (imageNode) {
-      imageNode.src = image;
-      imageNode.alt = title || `Portfolio card ${index + 1}`;
-    }
+    setImageSource(imageNode, image, title || `Portfolio card ${index + 1}`);
   });
 }
 
@@ -259,12 +459,12 @@ function getCardModalItem(index) {
 }
 
 function openModal(item) {
+  item = localizeModalItem(item);
   const [title, subtitle, image, desc, height = 88, extraText = "", extraImages = [], blocks = [], modalPhoto] = item;
   const isPersonalCard = typeof image === "string" && image.includes("/cards/admin-card-");
   const modalImageSrc = isPersonalCard ? height || image : modalPhoto || image;
   const modalHeight = isPersonalCard ? 88 : height;
-  modalImage.src = modalImageSrc;
-  modalImage.alt = `${title} ${subtitle}`.trim();
+  setImageSource(modalImage, modalImageSrc, `${title} ${subtitle}`.trim());
   modalTitle.textContent = title;
   modalTitle.hidden = !title;
   modalSubtitle.textContent = subtitle;
@@ -297,8 +497,7 @@ function openModal(item) {
       const media = document.createElement("div");
       media.className = "modal-block-media";
       const imageNode = document.createElement("img");
-      imageNode.src = block.image;
-      imageNode.alt = block.heading || title;
+      setImageSource(imageNode, block.image, block.heading || title);
       media.append(imageNode);
       blockNode.append(media);
     }
@@ -308,8 +507,7 @@ function openModal(item) {
   modalBlocks.hidden = blocks.length === 0;
   extraImages.forEach((src) => {
     const imageNode = document.createElement("img");
-    imageNode.src = src;
-    imageNode.alt = title;
+    setImageSource(imageNode, src, title);
     modalGallery.append(imageNode);
   });
   modalGallery.hidden = extraImages.length === 0;
@@ -317,7 +515,6 @@ function openModal(item) {
   modal.hidden = false;
   document.documentElement.style.overflow = "hidden";
   document.body.style.overflow = "hidden";
-  document.querySelector(".modal-close").focus();
 }
 
 function renderProjectPreview() {
@@ -332,8 +529,7 @@ function renderProjectPreview() {
   const previewBlocks = document.querySelector("[data-preview-blocks]");
   const previewGallery = document.querySelector("[data-preview-gallery]");
 
-  previewImage.src = image;
-  previewImage.alt = title;
+  setImageSource(previewImage, image, title);
   previewTitle.textContent = title;
   previewSubtitle.textContent = subtitle;
   previewDesc.textContent = desc;
@@ -364,8 +560,7 @@ function renderProjectPreview() {
       const media = document.createElement("div");
       media.className = "project-preview-media";
       const imageNode = document.createElement("img");
-      imageNode.src = block.image;
-      imageNode.alt = block.heading || title;
+      setImageSource(imageNode, block.image, block.heading || title);
       media.append(imageNode);
       blockNode.append(media);
     }
@@ -376,8 +571,7 @@ function renderProjectPreview() {
   previewBlocks.hidden = blocks.length === 0;
   extraImages.forEach((src) => {
     const imageNode = document.createElement("img");
-    imageNode.src = src;
-    imageNode.alt = title;
+    setImageSource(imageNode, src, title);
     previewGallery.append(imageNode);
   });
   previewGallery.hidden = extraImages.length === 0;
@@ -388,6 +582,43 @@ function closeModal() {
   modalImage.removeAttribute("src");
   document.documentElement.style.overflow = "";
   document.body.style.overflow = "";
+}
+
+function updateImageViewerTransform() {
+  imageViewerImg.style.setProperty("--viewer-scale", viewerScale);
+  imageViewerImg.style.setProperty("--viewer-x", `${viewerX}px`);
+  imageViewerImg.style.setProperty("--viewer-y", `${viewerY}px`);
+}
+
+function openImageViewer(src, alt = "") {
+  if (!src) return;
+  viewerScale = 1;
+  viewerX = 0;
+  viewerY = 0;
+  setImageSource(imageViewerImg, src, alt);
+  updateImageViewerTransform();
+  imageViewer.hidden = false;
+}
+
+function closeImageViewer() {
+  imageViewer.hidden = true;
+  imageViewerImg.removeAttribute("src");
+}
+
+function zoomImageViewer(delta) {
+  viewerScale = Math.min(4, Math.max(1, Number((viewerScale + delta).toFixed(2))));
+  if (viewerScale === 1) {
+    viewerX = 0;
+    viewerY = 0;
+  }
+  updateImageViewerTransform();
+}
+
+function resetImageViewer() {
+  viewerScale = 1;
+  viewerX = 0;
+  viewerY = 0;
+  updateImageViewerTransform();
 }
 
 function fillAdmin() {
@@ -533,6 +764,54 @@ document.querySelectorAll("[data-project]").forEach((card) => {
 
 document.querySelector(".modal-backdrop").addEventListener("click", closeModal);
 document.querySelector(".modal-close").addEventListener("click", closeModal);
+document.querySelector(".modal-panel").addEventListener("click", (event) => {
+  const imageNode = event.target.closest("img");
+  if (!imageNode || imageNode.classList.contains("is-loading") || !imageNode.currentSrc) return;
+  openImageViewer(imageNode.currentSrc, imageNode.alt);
+});
+
+document.querySelectorAll("[data-image-viewer-close]").forEach((button) => {
+  button.addEventListener("click", closeImageViewer);
+});
+
+document.querySelector("[data-image-zoom-in]").addEventListener("click", () => zoomImageViewer(0.35));
+document.querySelector("[data-image-zoom-out]").addEventListener("click", () => zoomImageViewer(-0.35));
+document.querySelector("[data-image-zoom-reset]").addEventListener("click", resetImageViewer);
+
+imageViewerImg.addEventListener("pointerdown", (event) => {
+  if (viewerScale <= 1) return;
+  viewerDragging = true;
+  viewerStartX = event.clientX;
+  viewerStartY = event.clientY;
+  viewerBaseX = viewerX;
+  viewerBaseY = viewerY;
+  imageViewerImg.setPointerCapture(event.pointerId);
+});
+
+imageViewerImg.addEventListener("pointermove", (event) => {
+  if (!viewerDragging) return;
+  viewerX = viewerBaseX + event.clientX - viewerStartX;
+  viewerY = viewerBaseY + event.clientY - viewerStartY;
+  updateImageViewerTransform();
+});
+
+imageViewerImg.addEventListener("pointerup", () => {
+  viewerDragging = false;
+});
+
+imageViewerImg.addEventListener("pointercancel", () => {
+  viewerDragging = false;
+});
+
+imageViewerImg.addEventListener("dblclick", () => {
+  if (viewerScale > 1) resetImageViewer();
+  else zoomImageViewer(1);
+});
+
+imageViewer.addEventListener("wheel", (event) => {
+  event.preventDefault();
+  zoomImageViewer(event.deltaY < 0 ? 0.25 : -0.25);
+}, { passive: false });
 
 const adminButton = document.querySelector("[data-admin-open]");
 const publicContact = document.querySelector("[data-public-contact]");
@@ -728,6 +1007,10 @@ document.addEventListener("keydown", (event) => {
 
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
+    if (!imageViewer.hidden) {
+      closeImageViewer();
+      return;
+    }
     if (!modal.hidden) closeModal();
     document.querySelector("[data-admin]").hidden = true;
   }
