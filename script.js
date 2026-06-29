@@ -18,6 +18,12 @@ const heroByLangDefaults = {
   ]
 };
 
+const cardModalPhotos = [
+  "./assets/cards/photo-1.jpg",
+  "./assets/cards/photo-3.jpg",
+  "./assets/cards/photo-4.jpg"
+];
+
 const defaults = {
   lang: "ru",
   heroByLang: heroByLangDefaults,
@@ -218,6 +224,20 @@ function renderContent() {
       imageNode.alt = title || `Portfolio card ${index + 1}`;
     }
   });
+}
+
+function getCardModalItem(index) {
+  const card = state.cards[index] || defaults.cards[index];
+  return [
+    card[0] || "",
+    card[1] || "",
+    cardModalPhotos[index] || card[2],
+    card[3] || defaults.cards[index]?.[3] || "",
+    88,
+    "",
+    [],
+    []
+  ];
 }
 
 function openModal(item) {
@@ -483,7 +503,7 @@ function readBlockFields() {
 }
 
 document.querySelectorAll("[data-card]").forEach((button) => {
-  button.addEventListener("click", () => openModal(state.cards[Number(button.dataset.card)]));
+  button.addEventListener("click", () => openModal(getCardModalItem(Number(button.dataset.card))));
 });
 
 document.querySelectorAll("[data-project]").forEach((card) => {
