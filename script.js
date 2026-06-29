@@ -35,9 +35,9 @@ const defaults = {
     ["Tinkoff Bank", "Learning platform for new investors", "./assets/img-case-10.avif", "A platform that guides first-time investors from zero to their first portfolio."]
   ],
   cards: [
-    ["", "", "./assets/cards/admin-card-1.svg", "В свободное время изучаю английский, занимаюсь йогой, гуляю со своей собакой и путешествую. Люблю открывать новые места, людей и впечатления."],
-    ["", "", "./assets/cards/admin-card-2.svg", "Более 4 лет занимаюсь дизайном. Последние 2 года работаю дизайнером в одной из крупнейших технологических компаний — Сбере. За это время участвовала в проектах разного масштаба: от создания контента для социальных сетей до разработки сайтов и цифровых продуктов. Также имею опыт разработки айдентики как для внутренних проектов крупной компании, так и для небольших стартапов."],
-    ["", "", "./assets/cards/admin-card-3.svg", "Веду канал о нейросетях, где рассказываю о новых инструментах, делюсь практическими способами использования ИИ и показываю собственные проекты."]
+    ["", "", "./assets/cards/admin-card-1.svg", "В свободное время изучаю английский, занимаюсь йогой, гуляю со своей собакой и путешествую. Люблю открывать новые места, людей и впечатления.", "./assets/cards/photo-1.jpg"],
+    ["", "", "./assets/cards/admin-card-2.svg", "Более 4 лет занимаюсь дизайном. Последние 2 года работаю дизайнером в одной из крупнейших технологических компаний — Сбере. За это время участвовала в проектах разного масштаба: от создания контента для социальных сетей до разработки сайтов и цифровых продуктов. Также имею опыт разработки айдентики как для внутренних проектов крупной компании, так и для небольших стартапов.", "./assets/cards/photo-3.jpg"],
+    ["", "", "./assets/cards/admin-card-3.svg", "Веду канал о нейросетях, где рассказываю о новых инструментах, делюсь практическими способами использования ИИ и показываю собственные проекты.", "./assets/cards/photo-4.jpg"]
   ]
 };
 
@@ -110,7 +110,12 @@ function mergeCards(savedCards) {
   return defaults.cards.map((card, index) => {
     const savedCard = savedCards[index];
     if (!Array.isArray(savedCard) || savedCard[3] === "Editable portfolio card.") return card;
-    return savedCard;
+    const merged = [...card];
+    savedCard.forEach((value, valueIndex) => {
+      merged[valueIndex] = value;
+    });
+    merged[4] = card[4];
+    return merged;
   });
 }
 
@@ -176,8 +181,8 @@ function renderContent() {
 }
 
 function openModal(item) {
-  const [title, subtitle, image, desc, height = 88, extraText = "", extraImages = [], blocks = []] = item;
-  modalImage.src = image;
+  const [title, subtitle, image, desc, height = 88, extraText = "", extraImages = [], blocks = [], modalPhoto] = item;
+  modalImage.src = modalPhoto || image;
   modalImage.alt = `${title} ${subtitle}`.trim();
   modalTitle.textContent = title;
   modalTitle.hidden = !title;
