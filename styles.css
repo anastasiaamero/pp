@@ -403,7 +403,9 @@ img {
   inset: 0;
   z-index: 20;
   display: grid;
-  place-items: center;
+  align-items: start;
+  justify-items: center;
+  overflow: auto;
   padding: 16px;
 }
 

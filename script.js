@@ -1,4 +1,4 @@
-const STORAGE_KEY = "korolev-clone-admin-v1";
+const STORAGE_KEY = "anastasiaamero-site-v2";
 const LANGUAGE_KEY = "anastasiaamero-language";
 
 const heroByLangDefaults = {
@@ -23,16 +23,56 @@ const defaults = {
   heroByLang: heroByLangDefaults,
   hero: heroByLangDefaults.ru,
   projects: [
-    ["Albato Copilot", "Simpler complex user journeys", "./assets/img-case-1.avif", "Specializing in data-heavy SaaS platforms, complex workflows and scalable product systems."],
-    ["Albato Builder", "canvas-based interaction mode", "./assets/img-case-2.avif", "Rethinking how users build complex automations through a visual drag-and-drop interface."],
-    ["Albato Redesign", "Clarity, usability & scalability", "./assets/img-case-3.avif", "A complete platform redesign focused on clarity, usability and international expansion."],
-    ["Coffee Maker App", "Personalise the coffee-making experience", "./assets/img-case-4.avif", "A concept app that connects to smart coffee machines for a personalised brewing experience."],
-    ["SPIK", "Learn & revisit personal vocabulary", "./assets/img-case-5.avif", "A language-learning app focused on personal vocabulary building through spaced repetition."],
-    ["Web clipper", "Scalable knowledge management system", "./assets/img-case-6.avif", "A browser extension for capturing, organising and retrieving web content at scale."],
-    ["Coffeeopia", "Community platform for specialty coffee", "./assets/img-case-7.avif", "A community platform connecting specialty coffee enthusiasts, roasters and baristas."],
-    ["Hilight", "Navigation for visually impaired", "./assets/img-case-8.avif", "An accessibility-first navigation app designed for visually impaired users."],
-    ["Tinkoff Bank", "Gamified investment experience", "./assets/img-case-9.avif", "Gamifying the investment experience for one of Russia's largest digital banks."],
-    ["Tinkoff Bank", "Learning platform for new investors", "./assets/img-case-10.avif", "A platform that guides first-time investors from zero to their first portfolio."]
+    ["СБОЛ.про", "Брендинг платформы", "./assets/portfolio/page-04.png", "Айдентика и визуальная система для объединенной платформы СБОЛ.про.", 88, "", [], [
+      { heading: "Контекст", text: "Платформе нужна была современная, гибкая и масштабируемая визуальная система для коммуникаций, презентаций и внутренних материалов.", image: "./assets/portfolio/page-03.png", align: "full" },
+      { heading: "Роль", text: "Концепция, логотип, визуальный язык, шаблоны, гайдбук и AI-графика.", image: "./assets/portfolio/page-04.png", align: "full" },
+      { heading: "Результат", text: "Система используется командами продукта и легла в основу десятков коммуникационных материалов.", image: "./assets/portfolio/page-04.png", align: "full" }
+    ]],
+    ["AI-библиотека", "Библиотека изображений", "./assets/portfolio/page-06.png", "Набор AI-визуалов в фирменном стиле платформы.", 88, "", [], [
+      { heading: "Контекст", text: "Командам требовался единый набор визуалов, который можно использовать в интерфейсах, презентациях и медиа.", image: "./assets/portfolio/page-05.png", align: "full" },
+      { heading: "Роль", text: "Концепция, генерации, обработка и систематизация изображений.", image: "./assets/portfolio/page-06.png", align: "full" },
+      { heading: "Результат", text: "Библиотека используется командами для презентаций и интерфейсов.", image: "./assets/portfolio/page-06.png", align: "full" }
+    ]],
+    ["Мерч СБОЛ", "Айдентика в физическом носителе", "./assets/portfolio/page-08.png", "Мерч для команды платформы СБОЛ.про.", 88, "", [], [
+      { heading: "Контекст", text: "Нужно было перенести айдентику платформы на материальные носители и сделать мерч узнаваемым.", image: "./assets/portfolio/page-07.png", align: "full" },
+      { heading: "Роль", text: "Концепция, дизайн, AI-генерации, подготовка к производству.", image: "./assets/portfolio/page-08.png", align: "full" },
+      { heading: "Результат", text: "Мерч использовался на внутренних мероприятиях и в коммуникациях команды.", image: "./assets/portfolio/page-08.png", align: "full" }
+    ]],
+    ["ИИ-офис", "Концепты карт", "./assets/portfolio/page-10.png", "Визуальные концепты карт для ИИ-офиса Сбера.", 88, "", [], [
+      { heading: "Контекст", text: "Внутренние карточные продукты требовали визуального языка, связанного с темой ИИ и технологичности.", image: "./assets/portfolio/page-09.png", align: "full" },
+      { heading: "Роль", text: "Концепт, визуальный язык, 3D-формы, AI-генерации и подготовка вариантов.", image: "./assets/portfolio/page-10.png", align: "full" },
+      { heading: "Результат", text: "Подготовлены концепты и визуальная база для дальнейшего развития носителей.", image: "./assets/portfolio/page-10.png", align: "full" }
+    ]],
+    ["Domo стиль", "Визуальный стиль бюро", "./assets/portfolio/page-13.png", "Система визуального стиля для архитектурного бюро.", 88, "", [], [
+      { heading: "Контекст", text: "Архитектурному бюро был нужен узнаваемый стиль для регулярной коммуникации и материалов.", image: "./assets/portfolio/page-12.png", align: "full" },
+      { heading: "Роль", text: "Концепция, визуальный язык, мудборд и дизайн материалов.", image: "./assets/portfolio/page-13.png", align: "full" },
+      { heading: "Результат", text: "Стиль используется в контенте и коммуникациях архитектурного бюро.", image: "./assets/portfolio/page-13.png", align: "full" }
+    ]],
+    ["Domo материалы", "Контент и шаблоны", "./assets/portfolio/page-13.png", "Материалы и шаблоны для коммуникаций Domo.", 88, "", [], [
+      { heading: "Контекст", text: "Нужно было собрать визуальную систему, которая поддерживает разные форматы контента.", image: "./assets/portfolio/page-12.png", align: "full" },
+      { heading: "Роль", text: "Разработка шаблонов, композиций и визуальных принципов для публикаций.", image: "./assets/portfolio/page-13.png", align: "full" },
+      { heading: "Результат", text: "Материалы стали основой для регулярного визуального языка бренда.", image: "./assets/portfolio/page-13.png", align: "full" }
+    ]],
+    ["Altanina LLC", "Айдентика бизнеса", "./assets/portfolio/page-16.png", "Айдентика для малого бизнеса в США.", 88, "", [], [
+      { heading: "Контекст", text: "Малому бизнесу требовалась айдентика, которую можно использовать на носителях, сайте и в коммуникациях.", image: "./assets/portfolio/page-15.png", align: "full" },
+      { heading: "Роль", text: "Концепция, логотип, персонажи, носители и визуальная система.", image: "./assets/portfolio/page-16.png", align: "full" },
+      { heading: "Результат", text: "Айдентика используется в фирменных материалах и коммуникациях компании.", image: "./assets/portfolio/page-16.png", align: "full" }
+    ]],
+    ["Сивил стиль", "Обновление бренда", "./assets/portfolio/page-19.png", "Обновление фирменного стиля для бренда Сивил.", 88, "", [], [
+      { heading: "Контекст", text: "Бренду требовалось обновить визуальный язык и сделать коммуникации современнее.", image: "./assets/portfolio/page-18.png", align: "full" },
+      { heading: "Роль", text: "Концепция, визуальный язык, шаблоны и носители.", image: "./assets/portfolio/page-19.png", align: "full" },
+      { heading: "Результат", text: "Стиль стал основой для носителей и коммуникаций бренда.", image: "./assets/portfolio/page-19.png", align: "full" }
+    ]],
+    ["Апекс соцсети", "Айдентика контента", "./assets/portfolio/page-22.png", "Визуальная система для соцсетей проекта Апекс.", 88, "", [], [
+      { heading: "Контекст", text: "Проекту нужна была узнаваемая тема для Instagram и Telegram.", image: "./assets/portfolio/page-21.png", align: "full" },
+      { heading: "Роль", text: "Концепция, шаблоны, визуальный язык и оформление контента.", image: "./assets/portfolio/page-22.png", align: "full" },
+      { heading: "Результат", text: "Появился единый визуальный стиль для социальных сетей.", image: "./assets/portfolio/page-22.png", align: "full" }
+    ]],
+    ["Апекс контент", "Публикации и медиа", "./assets/portfolio/page-22.png", "Контентные материалы для соцсетей проекта Апекс.", 88, "", [], [
+      { heading: "Контекст", text: "Нужно было адаптировать визуальную систему под разные форматы постов и публикаций.", image: "./assets/portfolio/page-21.png", align: "full" },
+      { heading: "Роль", text: "Шаблоны, оформление публикаций, подбор визуалов и сборка материалов.", image: "./assets/portfolio/page-22.png", align: "full" },
+      { heading: "Результат", text: "Контент стал более цельным и узнаваемым в рамках единого бренда.", image: "./assets/portfolio/page-22.png", align: "full" }
+    ]]
   ],
   cards: [
     ["", "", "./assets/cards/admin-card-1.svg", "В свободное время изучаю английский, занимаюсь йогой, гуляю со своей собакой и путешествую. Люблю открывать новые места, людей и впечатления.", "./assets/cards/photo-1.jpg"],
@@ -183,7 +223,9 @@ function renderContent() {
 function openModal(item) {
   const [title, subtitle, image, desc, height = 88, extraText = "", extraImages = [], blocks = [], modalPhoto] = item;
   const isPersonalCard = typeof image === "string" && image.includes("/cards/admin-card-");
-  modalImage.src = isPersonalCard && height ? height : modalPhoto || image;
+  const modalImageSrc = isPersonalCard ? height || image : modalPhoto || image;
+  const modalHeight = isPersonalCard ? 88 : height;
+  modalImage.src = modalImageSrc;
   modalImage.alt = `${title} ${subtitle}`.trim();
   modalTitle.textContent = title;
   modalTitle.hidden = !title;
@@ -233,7 +275,7 @@ function openModal(item) {
     modalGallery.append(imageNode);
   });
   modalGallery.hidden = extraImages.length === 0;
-  document.documentElement.style.setProperty("--project-modal-height", `${height}svh`);
+  document.documentElement.style.setProperty("--project-modal-height", `${modalHeight}svh`);
   modal.hidden = false;
   document.documentElement.style.overflow = "hidden";
   document.body.style.overflow = "hidden";
