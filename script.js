@@ -1,13 +1,27 @@
 const STORAGE_KEY = "korolev-clone-admin-v1";
+const LANGUAGE_KEY = "anastasiaamero-language";
+
+const heroByLangDefaults = {
+  ru: [
+    "Коммуникационный",
+    "дизайнер",
+    "Анастасия",
+    "Пескова",
+    ""
+  ],
+  en: [
+    "Communication",
+    "designer",
+    "Anastasia",
+    "Peskova",
+    ""
+  ]
+};
 
 const defaults = {
-  hero: [
-    "Bridging user needs",
-    "& business goals",
-    "10 years of designing",
-    "scalable, high-impact",
-    "products"
-  ],
+  lang: "ru",
+  heroByLang: heroByLangDefaults,
+  hero: heroByLangDefaults.ru,
   projects: [
     ["Albato Copilot", "Simpler complex user journeys", "./assets/img-case-1.avif", "Specializing in data-heavy SaaS platforms, complex workflows and scalable product systems."],
     ["Albato Builder", "canvas-based interaction mode", "./assets/img-case-2.avif", "Rethinking how users build complex automations through a visual drag-and-drop interface."],
@@ -55,14 +69,40 @@ function readState() {
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
     if (!saved) return cloneDefaults();
+    const lang = saved.lang || localStorage.getItem(LANGUAGE_KEY) || defaults.lang;
+    const heroByLang = mergeHeroLanguages(saved);
     return {
-      hero: saved.hero || defaults.hero,
+      lang,
+      heroByLang,
+      hero: heroByLang[lang] || heroByLang.ru,
       projects: defaults.projects.map((project, index) => mergeProject(project, saved.projects?.[index])),
       cards: saved.cards || defaults.cards
     };
   } catch {
     return cloneDefaults();
   }
+}
+
+function mergeHeroLanguages(saved) {
+  const heroByLang = JSON.parse(JSON.stringify(heroByLangDefaults));
+  if (saved.heroByLang) {
+    Object.keys(heroByLang).forEach((lang) => {
+      if (Array.isArray(saved.heroByLang[lang])) {
+        heroByLang[lang] = normalizeHero(saved.heroByLang[lang], heroByLang[lang]);
+      }
+    });
+  } else if (Array.isArray(saved.hero) && !isLegacyHero(saved.hero)) {
+    heroByLang.ru = normalizeHero(saved.hero, heroByLang.ru);
+  }
+  return heroByLang;
+}
+
+function normalizeHero(hero, fallback) {
+  return fallback.map((line, index) => hero[index] ?? line);
+}
+
+function isLegacyHero(hero) {
+  return hero[0] === "Bridging user needs" || hero[2] === "10 years of designing";
 }
 
 function mergeProject(project, saved) {
@@ -81,17 +121,27 @@ function mergeProject(project, saved) {
 
 function saveState() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify({
+    lang: state.lang,
+    heroByLang: state.heroByLang,
     hero: state.hero,
     projects: state.projects,
     cards: state.cards
   }));
+  localStorage.setItem(LANGUAGE_KEY, state.lang);
 }
 
 function renderContent() {
+  state.hero = state.heroByLang[state.lang] || state.heroByLang.ru;
   state.hero.forEach((line, index) => {
     const node = document.querySelector(`[data-hero-line="${index}"]`);
-    if (node) node.textContent = line;
+    if (node) {
+      node.textContent = line;
+      node.hidden = !line;
+    }
   });
+  document.documentElement.lang = state.lang;
+  const langToggle = document.querySelector("[data-lang-toggle]");
+  if (langToggle) langToggle.textContent = state.lang === "ru" ? "En" : "Ru";
 
   state.projects.forEach((project, index) => {
     const [title, subtitle, image] = project;
@@ -234,6 +284,7 @@ function closeModal() {
 }
 
 function fillAdmin() {
+  state.hero = state.heroByLang[state.lang] || state.heroByLang.ru;
   state.hero.forEach((line, index) => {
     const input = document.querySelector(`[data-hero-input="${index}"]`);
     if (input) input.value = line;
@@ -282,6 +333,7 @@ function readAdminFields() {
     const input = document.querySelector(`[data-hero-input="${index}"]`);
     return input ? input.value.trim() : line;
   });
+  state.heroByLang[state.lang] = state.hero;
 
   const project = state.projects[selectedProject];
   project[0] = document.querySelector('[data-project-field="title"]').value.trim();
@@ -374,9 +426,25 @@ document.querySelector(".modal-close").addEventListener("click", closeModal);
 
 const adminButton = document.querySelector("[data-admin-open]");
 const publicContact = document.querySelector("[data-public-contact]");
+const langToggle = document.querySelector("[data-lang-toggle]");
 if (isAdminMode) {
   adminButton.hidden = false;
   publicContact.hidden = true;
+}
+
+if (langToggle) {
+  langToggle.addEventListener("click", () => {
+    if (!document.querySelector("[data-admin]").hidden) {
+      readAdminFields();
+    }
+    state.lang = state.lang === "ru" ? "en" : "ru";
+    state.hero = state.heroByLang[state.lang] || state.heroByLang.ru;
+    saveState();
+    renderContent();
+    if (!document.querySelector("[data-admin]").hidden) {
+      fillAdmin();
+    }
+  });
 }
 
 adminButton.addEventListener("click", () => {
@@ -463,6 +531,7 @@ document.querySelector("[data-save]").addEventListener("click", () => {
 
 document.querySelector("[data-reset]").addEventListener("click", () => {
   localStorage.removeItem(STORAGE_KEY);
+  localStorage.removeItem(LANGUAGE_KEY);
   state = cloneDefaults();
   selectedProject = 0;
   selectedCard = 0;

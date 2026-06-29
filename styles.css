@@ -92,11 +92,18 @@ img {
   height: 100%;
 }
 
-.admin-fab {
+.top-actions {
   position: fixed;
   top: 16px;
   right: 16px;
   z-index: 12;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-fab,
+.lang-toggle {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -113,7 +120,12 @@ img {
   backdrop-filter: blur(14px);
 }
 
-.admin-fab[hidden] {
+.lang-toggle {
+  min-width: 48px;
+}
+
+.admin-fab[hidden],
+.lang-toggle[hidden] {
   display: none;
 }
 
