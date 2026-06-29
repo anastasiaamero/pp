@@ -111,7 +111,7 @@ function mergeCards(savedCards) {
     const savedCard = savedCards[index];
     if (!Array.isArray(savedCard) || savedCard[3] === "Editable portfolio card.") return card;
     const merged = [...card];
-    savedCard.forEach((value, valueIndex) => {
+    savedCard.slice(0, 4).forEach((value, valueIndex) => {
       merged[valueIndex] = value;
     });
     merged[4] = card[4];
@@ -182,7 +182,8 @@ function renderContent() {
 
 function openModal(item) {
   const [title, subtitle, image, desc, height = 88, extraText = "", extraImages = [], blocks = [], modalPhoto] = item;
-  modalImage.src = modalPhoto || image;
+  const isPersonalCard = typeof image === "string" && image.includes("/cards/admin-card-");
+  modalImage.src = isPersonalCard && height ? height : modalPhoto || image;
   modalImage.alt = `${title} ${subtitle}`.trim();
   modalTitle.textContent = title;
   modalTitle.hidden = !title;
