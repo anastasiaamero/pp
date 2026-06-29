@@ -280,7 +280,7 @@ function readState() {
       lang,
       heroByLang,
       hero: heroByLang[lang] || heroByLang.ru,
-      projects: defaults.projects.map((project, index) => mergeProject(project, saved.projects?.[index])),
+      projects: mergeProjects(saved.projects),
       cards: mergeCards(saved.cards)
     };
   } catch {
@@ -322,6 +322,12 @@ function mergeCards(savedCards) {
     merged[4] = card[4];
     return merged;
   });
+}
+
+function mergeProjects(savedProjects) {
+  if (!Array.isArray(savedProjects)) return defaults.projects;
+  if (!savedProjects.length) return defaults.projects;
+  return savedProjects.map((project, index) => mergeProject(defaults.projects[index] || createEmptyProject(), project));
 }
 
 function mergeProject(project, saved) {
@@ -412,6 +418,47 @@ function renderUiText() {
   });
 }
 
+function createProjectCard(index) {
+  const article = document.createElement("article");
+  article.className = "case-card is-visible";
+  article.dataset.project = String(index);
+  article.innerHTML = `
+    <div class="case-title">
+      <h2 data-project-title="${index}"></h2>
+      <p data-project-subtitle="${index}"></p>
+    </div>
+    <div class="case-media"><img data-project-image-view="${index}" alt="" /></div>
+  `;
+  return article;
+}
+
+function bindProjectCard(card) {
+  if (card.dataset.bound === "1") return;
+  card.dataset.bound = "1";
+  card.addEventListener("click", () => {
+    const project = state.projects[Number(card.dataset.project)];
+    if (project) openModal(project);
+  });
+}
+
+function ensureProjectCards() {
+  const grid = document.querySelector(".case-grid");
+  if (!grid) return;
+  while (grid.querySelectorAll("[data-project]").length < state.projects.length) {
+    grid.append(createProjectCard(grid.querySelectorAll("[data-project]").length));
+  }
+  grid.querySelectorAll("[data-project]").forEach((card, index) => {
+    card.dataset.project = String(index);
+    const title = card.querySelector("[data-project-title]");
+    const subtitle = card.querySelector("[data-project-subtitle]");
+    const image = card.querySelector("[data-project-image-view]");
+    if (title) title.dataset.projectTitle = String(index);
+    if (subtitle) subtitle.dataset.projectSubtitle = String(index);
+    if (image) image.dataset.projectImageView = String(index);
+    bindProjectCard(card);
+  });
+}
+
 function renderContent() {
   state.hero = state.heroByLang[state.lang] || state.heroByLang.ru;
   state.hero.forEach((line, index) => {
@@ -425,6 +472,7 @@ function renderContent() {
   const langToggle = document.querySelector("[data-lang-toggle]");
   if (langToggle) langToggle.textContent = state.lang === "ru" ? "En" : "Ru";
   renderUiText();
+  ensureProjectCards();
 
   document.querySelectorAll("[data-project]").forEach((card) => {
     const index = Number(card.dataset.project);
@@ -465,8 +513,8 @@ function getCardModalItem(index) {
 function openModal(item) {
   item = localizeModalItem(item);
   const [title, subtitle, image, desc, height = 88, extraText = "", extraImages = [], blocks = [], modalPhoto] = item;
-  const isPersonalCard = typeof image === "string" && image.includes("/cards/admin-card-");
-  const modalImageSrc = isPersonalCard ? height || image : modalPhoto || image;
+  const isPersonalCard = typeof image === "string" && (image.includes("/cards/admin-card-") || image.includes("/cards/photo-"));
+  const modalImageSrc = isPersonalCard ? image : modalPhoto || image;
   const modalHeight = isPersonalCard ? 88 : height;
   modalImage.hidden = !isPersonalCard;
   if (isPersonalCard) {
@@ -640,6 +688,33 @@ function getViewerPointerDistance() {
   return Math.hypot(second.x - first.x, second.y - first.y);
 }
 
+function createEmptyProject() {
+  return [
+    "Новый проект",
+    "Описание проекта",
+    "./assets/portfolio/page-04.png",
+    "Короткое описание проекта.",
+    88,
+    "",
+    [],
+    [
+      { heading: "Контекст", text: "", image: "", align: "full" },
+      { heading: "Задача", text: "", image: "", align: "full" },
+      { heading: "Роль", text: "", image: "", align: "full" },
+      { heading: "Решение", text: "", image: "", align: "full" },
+      { heading: "Результат", text: "", image: "", align: "full" }
+    ]
+  ];
+}
+
+function refreshAdminAfterProjectChange() {
+  selectedProject = Math.min(selectedProject, Math.max(state.projects.length - 1, 0));
+  selectedBlock = 0;
+  renderContent();
+  fillAdmin();
+  saveState();
+}
+
 function fillAdmin() {
   state.hero = state.heroByLang[state.lang] || state.heroByLang.ru;
   state.hero.forEach((line, index) => {
@@ -774,13 +849,6 @@ document.querySelectorAll("[data-card]").forEach((button) => {
   button.addEventListener("click", () => openModal(getCardModalItem(Number(button.dataset.card))));
 });
 
-document.querySelectorAll("[data-project]").forEach((card) => {
-  card.addEventListener("click", () => {
-    const project = state.projects[Number(card.dataset.project)];
-    if (project) openModal(project);
-  });
-});
-
 document.querySelector(".modal-backdrop").addEventListener("click", closeModal);
 document.querySelector(".modal-close").addEventListener("click", closeModal);
 document.querySelector(".modal-panel").addEventListener("click", (event) => {
@@ -883,6 +951,36 @@ document.querySelector("[data-project-select]").addEventListener("change", (even
   readAdminFields();
   selectedProject = Number(event.target.value);
   fillProjectFields();
+});
+
+document.querySelector("[data-project-add]").addEventListener("click", () => {
+  readAdminFields();
+  state.projects.splice(selectedProject + 1, 0, createEmptyProject());
+  selectedProject += 1;
+  refreshAdminAfterProjectChange();
+});
+
+document.querySelector("[data-project-delete]").addEventListener("click", () => {
+  if (state.projects.length <= 1) return;
+  state.projects.splice(selectedProject, 1);
+  selectedProject = Math.max(0, selectedProject - 1);
+  refreshAdminAfterProjectChange();
+});
+
+document.querySelector("[data-project-up]").addEventListener("click", () => {
+  readAdminFields();
+  if (selectedProject <= 0) return;
+  [state.projects[selectedProject - 1], state.projects[selectedProject]] = [state.projects[selectedProject], state.projects[selectedProject - 1]];
+  selectedProject -= 1;
+  refreshAdminAfterProjectChange();
+});
+
+document.querySelector("[data-project-down]").addEventListener("click", () => {
+  readAdminFields();
+  if (selectedProject >= state.projects.length - 1) return;
+  [state.projects[selectedProject + 1], state.projects[selectedProject]] = [state.projects[selectedProject], state.projects[selectedProject + 1]];
+  selectedProject += 1;
+  refreshAdminAfterProjectChange();
 });
 
 document.querySelector("[data-block-select]").addEventListener("change", (event) => {

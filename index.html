@@ -9,7 +9,7 @@
     <link rel="preload" href="./fonts/AppleGaramond.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="./fonts/GreedNarrow-SemiBold.woff" as="font" type="font/woff" crossorigin />
     <link rel="preload" href="./fonts/PPNeueBit-Bold.woff" as="font" type="font/woff" crossorigin />
-    <link rel="stylesheet" href="./styles.css?v=7" />
+    <link rel="stylesheet" href="./styles.css?v=8" />
   </head>
   <body>
     <a class="site-logo" href="./index.html" aria-label="anastasiaamero">
@@ -180,6 +180,12 @@
           <div class="admin-section">
             <h3>Проекты</h3>
             <label>Выбрать проект <select data-project-select></select></label>
+            <div class="project-toolbar">
+              <button type="button" data-project-add>Добавить проект</button>
+              <button type="button" data-project-up>Выше</button>
+              <button type="button" data-project-down>Ниже</button>
+              <button type="button" data-project-delete>Удалить</button>
+            </div>
             <label>Название <input data-project-field="title" type="text" /></label>
             <label>Подзаголовок <input data-project-field="subtitle" type="text" /></label>
             <label>Описание в окне <textarea data-project-field="desc" rows="4"></textarea></label>
@@ -241,6 +247,6 @@
       </div>
     </aside>
 
-    <script src="./script.js?v=7"></script>
+    <script src="./script.js?v=8"></script>
   </body>
 </html>
