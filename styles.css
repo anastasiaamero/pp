@@ -411,7 +411,10 @@ img.is-loading {
   align-items: center;
   justify-items: center;
   overflow: auto;
-  padding: 42px 24px;
+}
+
+.modal:not(.is-personal) {
+  padding: 20px;
 }
 
 .modal-backdrop {
@@ -423,13 +426,17 @@ img.is-loading {
 
 .modal-panel {
   position: relative;
-  width: min(1180px, calc(100vw - 160px));
-  height: min(var(--project-modal-height, 76svh), 76svh, calc(100svh - 84px));
   overflow: auto;
   padding: 44px 72px;
   border-radius: 32px;
   background: #fff;
   box-shadow: var(--shadow);
+}
+
+.modal:not(.is-personal) .modal-panel {
+  width: calc(100vw - 40px);
+  height: calc(100svh - 40px);
+  border-radius: 24px;
 }
 
 .modal-panel > img {
@@ -570,9 +577,9 @@ img.is-loading {
 }
 
 .modal-close {
-  position: absolute;
-  top: 24px;
-  right: 32px;
+  position: sticky;
+  top: 20px;
+  float: right;
   z-index: 2;
   padding: 8px 14px;
   border-radius: 999px;
@@ -582,6 +589,7 @@ img.is-loading {
   font-size: 20px;
   line-height: 18px;
   text-transform: uppercase;
+  cursor: pointer;
 }
 
 .modal-close:focus,
@@ -689,6 +697,13 @@ img.is-loading {
 .modal.is-personal .modal-gallery,
 .modal.is-personal .modal-copy #modal-extra {
   display: none;
+}
+
+.modal.is-personal .modal-close {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  float: none;
 }
 
 .image-viewer[hidden] {
@@ -1116,7 +1131,8 @@ img.is-loading {
     font-size: 14px;
     line-height: 16px;
   }
-  .modal {
+  .modal,
+  .modal:not(.is-personal) {
     display: block;
     padding: 0;
     background: #fff;
@@ -1125,7 +1141,8 @@ img.is-loading {
   .modal-backdrop {
     display: none;
   }
-  .modal-panel {
+  .modal-panel,
+  .modal:not(.is-personal) .modal-panel {
     width: 100%;
     min-height: 100svh;
     height: auto;

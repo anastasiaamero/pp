@@ -237,10 +237,8 @@ let selectedProject = 0;
 let selectedBlock = 0;
 let selectedCard = 0;
 let activeCardModalIndex = 0;
-const adminRequested = new URLSearchParams(window.location.search).get("admin") === "1" || window.location.hash === "#admin";
-if (adminRequested) localStorage.setItem("adminAccess", "1");
-const isLocalPreview = window.location.protocol === "file:" || window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
-const isAdminMode = isLocalPreview || adminRequested || localStorage.getItem("adminAccess") === "1";
+const adminRequested = new URLSearchParams(window.location.search).has("admin") || window.location.hash === "#admin";
+const isAdminMode = adminRequested || localStorage.getItem("adminAccess") === "1";
 
 const modal = document.querySelector("#modal");
 const modalImage = document.querySelector("#modal-image");
@@ -359,12 +357,26 @@ function saveState() {
       cards: state.cards
     }));
     localStorage.setItem(LANGUAGE_KEY, state.lang);
+    showSaveIndicator();
     return true;
   } catch (error) {
     console.error(error);
     alert("Не получилось сохранить изменения: изображение слишком большое для браузера. Попробуй загрузить картинку поменьше.");
     return false;
   }
+}
+
+function showSaveIndicator() {
+  const el = document.querySelector(".admin-note");
+  if (!el) return;
+  const orig = el.textContent;
+  el.textContent = "✓ Сохранено";
+  el.style.color = "#0a0";
+  clearTimeout(el._saveTimer);
+  el._saveTimer = setTimeout(() => {
+    el.textContent = orig;
+    el.style.color = "";
+  }, 1500);
 }
 
 function readFileAsDataUrl(file) {
@@ -837,11 +849,16 @@ function readAdminFields() {
   state.heroByLang[state.lang] = state.hero;
 
   const project = state.projects[selectedProject];
-  project[0] = document.querySelector('[data-project-field="title"]').value.trim();
-  project[1] = document.querySelector('[data-project-field="subtitle"]').value.trim();
-  project[3] = document.querySelector('[data-project-field="desc"]').value.trim();
-  project[4] = Number(document.querySelector('[data-project-field="height"]').value) || 88;
-  project[5] = document.querySelector('[data-project-field="extraText"]').value.trim();
+  const titleInput = document.querySelector('[data-project-field="title"]');
+  if (titleInput) project[0] = titleInput.value.trim();
+  const subtitleInput = document.querySelector('[data-project-field="subtitle"]');
+  if (subtitleInput) project[1] = subtitleInput.value.trim();
+  const descInput = document.querySelector('[data-project-field="desc"]');
+  if (descInput) project[3] = descInput.value.trim();
+  const heightInput = document.querySelector('[data-project-field="height"]');
+  if (heightInput) project[4] = Number(heightInput.value) || 88;
+  const extraInput = document.querySelector('[data-project-field="extraText"]');
+  if (extraInput) project[5] = extraInput.value.trim();
   if (!Array.isArray(project[6])) project[6] = [];
   if (!Array.isArray(project[7])) project[7] = [];
   readBlockFields();
@@ -909,9 +926,12 @@ function readBlockFields() {
   normalizeProjectBlocks();
   const block = state.projects[selectedProject][7][selectedBlock];
   if (!block) return;
-  block.heading = document.querySelector('[data-block-field="heading"]').value.trim();
-  block.text = document.querySelector('[data-block-field="text"]').value.trim();
-  block.align = document.querySelector('[data-block-field="align"]').value;
+  const headingInput = document.querySelector('[data-block-field="heading"]');
+  if (headingInput) block.heading = headingInput.value.trim();
+  const textInput = document.querySelector('[data-block-field="text"]');
+  if (textInput) block.text = textInput.value.trim();
+  const alignInput = document.querySelector('[data-block-field="align"]');
+  if (alignInput) block.align = alignInput.value.trim();
 }
 
 document.querySelectorAll("[data-card]").forEach((button) => {
