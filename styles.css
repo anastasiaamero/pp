@@ -1180,15 +1180,16 @@ img.is-loading {
     display: grid;
     place-items: center;
     min-height: 100svh;
-    padding: 118px 18px 62px;
+    padding: 16px;
     background: rgba(255, 255, 255, 0.92);
   }
   .modal.is-personal .modal-panel {
     width: min(100%, 390px);
+    max-height: calc(100svh - 32px);
     height: auto;
     min-height: 0;
     display: block;
-    overflow: visible;
+    overflow-y: auto;
     padding: 4px;
     border-radius: 32px;
     box-shadow: var(--shadow);
@@ -1220,13 +1221,13 @@ img.is-loading {
     width: 100%;
     max-width: none;
     height: auto;
-    max-height: 42svh;
+    max-height: 36svh;
     border-radius: 28px;
     object-fit: contain;
     background: #f2f2f2;
   }
   .modal.is-personal .modal-copy {
-    min-height: 420px;
+    min-height: auto;
     display: block;
     padding: 22px 22px 44px;
   }
