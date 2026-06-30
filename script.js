@@ -500,10 +500,8 @@ function bindProjectCard(card) {
 function ensureProjectCards() {
   const grid = document.querySelector(".case-grid");
   if (!grid) return;
-  let safety = 0;
-  while (grid.querySelectorAll("[data-project]").length < state.projects.length && safety < 200) {
+  while (grid.querySelectorAll("[data-project]").length < state.projects.length) {
     grid.append(createProjectCard(grid.querySelectorAll("[data-project]").length));
-    safety++;
   }
   grid.querySelectorAll("[data-project]").forEach((card, index) => {
     card.dataset.project = String(index);
@@ -1078,7 +1076,7 @@ if (langToggle) {
     state.lang = state.lang === "ru" ? "en" : "ru";
     state.hero = state.heroByLang[state.lang] || state.heroByLang.ru;
     saveState();
-try { renderContent(); } catch (e) { console.error(e); document.body.prepend(Object.assign(document.createElement("div"), { style: "position:fixed;inset:0;z-index:999;display:grid;place-items:center;background:#fff;padding:40px;font-family:system-ui,sans-serif", innerHTML: `<div><h2>Ошибка загрузки</h2><p style="color:red">${e.message}</p><p>Попробуй очистить localStorage и обновить страницу.</p><button onclick="localStorage.clear();location.reload()" style="margin-top:16px;padding:10px 20px;border:0;border-radius:8px;background:#000;color:#fff;font-size:16px;cursor:pointer">Очистить localStorage</button></div>` })); }
+    renderContent();
     if (!document.querySelector("[data-admin]").hidden) {
       fillAdmin();
     }
@@ -1217,7 +1215,7 @@ document.querySelector("[data-project-image]").addEventListener("change", (event
   readImageFile(file).then((src) => {
     state.projects[selectedProject][2] = src;
     if (saveState()) {
-try { renderContent(); } catch (e) { console.error(e); document.body.innerHTML = `<div style="padding:40px;font-family:sans-serif"><h2>Ошибка загрузки</h2><p style="color:red">${e.message}</p><p>Попробуй очистить localStorage и обновить страницу.</p></div>`; }
+      renderContent();
       renderProjectPreview();
     }
   }).catch(() => {
