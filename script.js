@@ -1,4 +1,4 @@
-const STORAGE_KEY = "anastasiaamero-site-v3";
+const STORAGE_KEY = "anastasiaamero-site-v4";
 const LANGUAGE_KEY = "anastasiaamero-language";
 
 const heroByLangDefaults = {
@@ -231,6 +231,24 @@ const defaults = {
     ["", "", "./assets/cards/admin-card-3.svg", "Веду канал о нейросетях, где рассказываю о новых инструментах, делюсь практическими способами использования ИИ и показываю собственные проекты.", "./assets/cards/photo-4.jpg"]
   ]
 };
+
+const restoredState = window.__ANASTASIA_RESTORED_STATE__;
+if (restoredState) {
+  if (restoredState.heroByLang) {
+    heroByLangDefaults.ru = restoredState.heroByLang.ru || heroByLangDefaults.ru;
+    heroByLangDefaults.en = restoredState.heroByLang.en || heroByLangDefaults.en;
+  }
+  defaults.lang = restoredState.lang || defaults.lang;
+  defaults.heroByLang = heroByLangDefaults;
+  defaults.hero = heroByLangDefaults[defaults.lang] || heroByLangDefaults.ru;
+  if (Array.isArray(restoredState.projects)) defaults.projects = restoredState.projects;
+  if (Array.isArray(restoredState.cards)) {
+    defaults.cards = restoredState.cards;
+    restoredState.cards.forEach((card, index) => {
+      if (card?.[4]) cardModalPhotos[index] = card[4];
+    });
+  }
+}
 
 let state = readState();
 let selectedProject = 0;
