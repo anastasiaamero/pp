@@ -901,30 +901,6 @@ img.is-loading {
   line-height: 1.35;
 }
 
-.admin-img-row {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
-.admin-img-row input {
-  flex: 1;
-}
-
-.admin-img-remove {
-  flex: 0 0 auto;
-  width: 36px;
-  height: 36px;
-  padding: 0;
-  border: 0;
-  border-radius: 50%;
-  background: #000;
-  color: #fff;
-  font-size: 15px;
-  line-height: 1;
-  cursor: pointer;
-}
-
 .admin-body label {
   display: grid;
   gap: 7px;
