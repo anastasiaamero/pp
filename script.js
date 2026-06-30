@@ -984,14 +984,24 @@ document.querySelectorAll("[data-card]").forEach((button) => {
 });
 
 document.querySelector(".modal-backdrop").addEventListener("click", closeModal);
-document.querySelector(".modal-close").addEventListener("click", closeModal);
+const modalCloseButton = document.querySelector(".modal-close");
+function handleModalClose(event) {
+  event.preventDefault();
+  event.stopPropagation();
+  closeModal();
+}
+modalCloseButton.addEventListener("click", handleModalClose);
+modalCloseButton.addEventListener("pointerup", handleModalClose);
+modalCloseButton.addEventListener("touchend", handleModalClose, { passive: false });
 document.querySelector(".modal-panel").addEventListener("pointerdown", (event) => {
+  if (event.target.closest(".modal-close")) return;
   if (!modal.classList.contains("is-personal")) return;
   cardSwipeHandled = false;
   cardSwipeStartX = event.clientX;
   cardSwipeStartY = event.clientY;
 });
 document.querySelector(".modal-panel").addEventListener("pointerup", (event) => {
+  if (event.target.closest(".modal-close")) return;
   if (!modal.classList.contains("is-personal")) return;
   const deltaX = event.clientX - cardSwipeStartX;
   const deltaY = event.clientY - cardSwipeStartY;
