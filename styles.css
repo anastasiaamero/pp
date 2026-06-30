@@ -696,7 +696,8 @@ img.is-loading {
   max-height: none;
   margin: 0;
   border-radius: 28px;
-  object-fit: contain;
+  object-fit: cover;
+  object-position: center center;
   background: #f2f2f2;
 }
 
