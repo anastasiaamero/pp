@@ -1299,7 +1299,7 @@ img.is-loading {
   .modal.is-personal .modal-panel > img {
     width: 100%;
     max-width: none;
-    height: min(62svh, 520px);
+    height: min(31svh, 260px);
     max-height: none;
     border-radius: 28px;
     object-fit: cover;
