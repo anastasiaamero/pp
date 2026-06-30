@@ -1298,10 +1298,11 @@ img.is-loading {
   .modal.is-personal .modal-panel > img {
     width: 100%;
     max-width: none;
-    height: auto;
-    max-height: 36svh;
+    height: min(62svh, 520px);
+    max-height: none;
     border-radius: 28px;
-    object-fit: contain;
+    object-fit: cover;
+    object-position: center center;
     background: #f2f2f2;
   }
   .modal.is-personal .modal-copy {
