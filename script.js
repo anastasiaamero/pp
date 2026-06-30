@@ -255,6 +255,7 @@ let selectedProject = 0;
 let selectedBlock = 0;
 let selectedCard = 0;
 let activeCardModalIndex = 0;
+let suppressProjectClicksUntil = 0;
 const urlParams = new URLSearchParams(window.location.search);
 if (urlParams.has("reset")) { localStorage.clear(); state = readState(); }
 const adminRequested = urlParams.has("admin") || window.location.hash === "#admin";
@@ -512,6 +513,7 @@ function bindProjectCard(card) {
   if (card.dataset.bound === "1") return;
   card.dataset.bound = "1";
   card.addEventListener("click", () => {
+    if (Date.now() < suppressProjectClicksUntil) return;
     const project = state.projects[Number(card.dataset.project)];
     if (project) openModal(project);
   });
@@ -990,6 +992,9 @@ function handleModalClose(event) {
   event.stopPropagation();
   closeModal();
 }
+document.addEventListener("pointerdown", (event) => {
+  if (event.target.closest(".modal-close")) handleModalClose(event);
+}, true);
 modalCloseButton.addEventListener("click", handleModalClose);
 modalCloseButton.addEventListener("pointerup", handleModalClose);
 modalCloseButton.addEventListener("touchend", handleModalClose, { passive: false });
@@ -1346,6 +1351,13 @@ document.addEventListener("keydown", (event) => {
     if (!modal.hidden) closeModal();
     document.querySelector("[data-admin]").hidden = true;
   }
+});
+
+const mobileProjectQuery = window.matchMedia("(max-width: 767px)");
+mobileProjectQuery.addEventListener("change", (event) => {
+  if (!event.matches) return;
+  suppressProjectClicksUntil = Date.now() + 900;
+  if (!modal.hidden) closeModal();
 });
 
 const observer = new IntersectionObserver((entries) => {
