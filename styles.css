@@ -322,13 +322,14 @@ img.is-loading {
 
 .case-media img {
   display: block;
-  width: calc(100% + 6px);
+  width: 100%;
   max-width: none;
   height: 100%;
   object-fit: cover;
-  object-position: top;
-  transform: translateX(-3px);
-  clip-path: inset(0 6px 4px 0);
+  object-position: center center;
+  transform: scale(1.012);
+  transform-origin: center center;
+  clip-path: inset(1px round 20px);
 }
 
 .footer-spacer {
