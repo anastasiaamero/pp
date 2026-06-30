@@ -237,7 +237,9 @@ let selectedProject = 0;
 let selectedBlock = 0;
 let selectedCard = 0;
 let activeCardModalIndex = 0;
-const adminRequested = new URLSearchParams(window.location.search).has("admin") || window.location.hash === "#admin";
+const urlParams = new URLSearchParams(window.location.search);
+if (urlParams.has("reset")) { localStorage.clear(); state = readState(); }
+const adminRequested = urlParams.has("admin") || window.location.hash === "#admin";
 const isAdminMode = adminRequested || localStorage.getItem("adminAccess") === "1";
 
 const modal = document.querySelector("#modal");
