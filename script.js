@@ -612,6 +612,7 @@ function renderCardStackImages(index) {
 }
 
 function openModal(item, options = {}) {
+  if (!options.personal && Date.now() < suppressProjectClicksUntil) return;
   item = localizeModalItem(item);
   const [title, subtitle, image, desc, height = 88, extraText = "", extraImages = [], blocks = [], modalPhoto] = item;
   const isPersonalCard = options.personal || (typeof image === "string" && (image.includes("/cards/admin-card-") || image.includes("/cards/photo-")));
@@ -990,14 +991,18 @@ const modalCloseButton = document.querySelector(".modal-close");
 function handleModalClose(event) {
   event.preventDefault();
   event.stopPropagation();
+  suppressProjectClicksUntil = Date.now() + 1400;
   closeModal();
 }
-document.addEventListener("pointerdown", (event) => {
-  if (event.target.closest(".modal-close")) handleModalClose(event);
-}, true);
 modalCloseButton.addEventListener("click", handleModalClose);
 modalCloseButton.addEventListener("pointerup", handleModalClose);
 modalCloseButton.addEventListener("touchend", handleModalClose, { passive: false });
+document.addEventListener("click", (event) => {
+  if (event.target.closest(".modal-close")) handleModalClose(event);
+}, true);
+document.addEventListener("touchend", (event) => {
+  if (event.target.closest(".modal-close")) handleModalClose(event);
+}, { capture: true, passive: false });
 document.querySelector(".modal-panel").addEventListener("pointerdown", (event) => {
   if (event.target.closest(".modal-close")) return;
   if (!modal.classList.contains("is-personal")) return;
@@ -1356,7 +1361,7 @@ document.addEventListener("keydown", (event) => {
 const mobileProjectQuery = window.matchMedia("(max-width: 767px)");
 mobileProjectQuery.addEventListener("change", (event) => {
   if (!event.matches) return;
-  suppressProjectClicksUntil = Date.now() + 900;
+  suppressProjectClicksUntil = Date.now() + 1400;
   if (!modal.hidden) closeModal();
 });
 

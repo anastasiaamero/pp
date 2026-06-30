@@ -317,10 +317,14 @@ img.is-loading {
 }
 
 .case-media img {
-  width: 100%;
+  display: block;
+  width: calc(100% + 6px);
+  max-width: none;
   height: 100%;
   object-fit: cover;
   object-position: top;
+  transform: translateX(-3px);
+  clip-path: inset(0 6px 4px 0);
 }
 
 .footer-spacer {
